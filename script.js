@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Añadir Tooltip y Evento de Clic en cascada si el fetiche es Findom
       if (fetish.value === "Findom") {
         label.classList.add('has-tooltip');
-        label.setAttribute('data-tooltip', '⚠️ No blackmail / Sin chantaje');
+        label.setAttribute('data-tooltip', '⚠️ No se hace chantaje chantaje');
         
         input.addEventListener('change', function() {
           if (this.checked && findomModal) {

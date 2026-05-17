@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLang = 'es';
 
-
   // --- 1. LÓGICA DEL CAMBIO DE IDIOMA ---
   function changeLanguage(lang) {
     currentLang = lang;
@@ -111,10 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Recargar países en el idioma correcto para que se ordenen y muestren bien
+    // Recargar países ordenados por el idioma
     loadCountries();
 
-    // Actualizar el texto visible del input Findom si ya había algo seleccionado
+    // Traducir input Findom si estaba seleccionado
     const fdInput = document.getElementById('findom-accept');
     const fdDisplay = document.getElementById('findom-accept-display');
     if (fdInput.value) {
@@ -122,6 +121,26 @@ document.addEventListener("DOMContentLoaded", () => {
       if(selectedOpt) fdDisplay.value = selectedOpt.textContent;
     }
   }
+
+  // --- 1.5 LÓGICA DEL INTERRUPTOR DE IDIOMA VISUAL ---
+  const langEsBtn = document.getElementById('lang-es');
+  const langEnBtn = document.getElementById('lang-en');
+
+  langEsBtn.addEventListener('click', () => {
+    if (currentLang !== 'es') {
+      langEsBtn.classList.add('active');
+      langEnBtn.classList.remove('active');
+      changeLanguage('es');
+    }
+  });
+
+  langEnBtn.addEventListener('click', () => {
+    if (currentLang !== 'en') {
+      langEnBtn.classList.add('active');
+      langEsBtn.classList.remove('active');
+      changeLanguage('en');
+    }
+  });
 
 
   // --- 2. MODAL DE AVISO +18 ---
@@ -163,28 +182,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // --- 4. CARGA DINÁMICA DE PAÍSES DESDE EL JSON ---
+  // --- 4. CARGA DINÁMICA DE PAÍSES ---
   function loadCountries() {
     const countryOptionsContainer = document.getElementById('country-options');
     if (!countryOptionsContainer) return;
     
-    countryOptionsContainer.innerHTML = ''; // Limpiar opciones anteriores
+    countryOptionsContainer.innerHTML = '';
     
     fetch('paises.json')
       .then(response => response.json())
       .then(data => {
-        // Ordenar alfabéticamente según el idioma actual
         data.sort((a, b) => a[currentLang].localeCompare(b[currentLang]));
         
         data.forEach(pais => {
           const optionDiv = document.createElement('div');
           optionDiv.className = 'custom-option';
           optionDiv.setAttribute('data-value', pais.code);
-          optionDiv.textContent = pais[currentLang]; // Lee 'es' o 'en'
+          optionDiv.textContent = pais[currentLang];
           countryOptionsContainer.appendChild(optionDiv);
         });
 
-        // Restaurar el valor visual si el usuario ya había elegido un país
         const cInput = document.getElementById('country');
         const cDisplay = document.getElementById('country-display');
         if (cInput.value) {
@@ -238,13 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger.classList.remove('error');
       wrapper.classList.remove('open');
       
-      // Activar validación
       hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-
-      // Si el selector que se tocó fue el de idioma, aplicar traducción general
-      if (hiddenInput.id === 'language') {
-        changeLanguage(hiddenInput.value);
-      }
     });
   });
 
@@ -264,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // --- 8. VALIDACIÓN DE FORMULARIO EN CASCADA ---
+  // --- 8. VALIDACIÓN EN CASCADA ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
   
@@ -283,39 +294,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const s4Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
-    // SECCIÓN 1 -> Abre SECCIÓN 2
+    // S1 -> S2
     const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
-    if (s1Valid) sec2.removeAttribute('disabled'); 
-    else sec2.setAttribute('disabled', 'true');
+    if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
-    // SECCIÓN 2 -> Abre SECCIÓN 3
+    // S2 -> S3
     const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
     const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
                     s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
-    if (s2Valid) sec3.removeAttribute('disabled'); 
-    else sec3.setAttribute('disabled', 'true');
+    if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
 
-    // SECCIÓN 3 -> Abre SECCIÓN 4
+    // S3 -> S4
     const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
     const s3Valid = s2Valid && s3Accept.value !== '' && s3Presupuesto.value !== '' && 
                     s3Limite.value !== '' && s3CbsValid;
-    if (s3Valid) sec4.removeAttribute('disabled'); 
-    else sec4.setAttribute('disabled', 'true');
+    if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    // SECCIÓN 4 -> Abre SECCIÓN 5
+    // S4 -> S5
     const contactoChecked = document.querySelector('input[name="contacto"]:checked') !== null;
     const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
-    if (s4Valid) sec5.removeAttribute('disabled'); 
-    else sec5.setAttribute('disabled', 'true');
+    if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
-    // SECCIÓN 5 -> Desbloquea el BOTÓN
+    // S5 -> BTN
     const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
     const s5Valid = s4Valid && s5CbsValid;
-    if (s5Valid) submitBtn.removeAttribute('disabled'); 
-    else submitBtn.setAttribute('disabled', 'true');
+    if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
   }
 
-  // Detectar entradas de usuario y validar en vivo
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
 
@@ -324,7 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
     alert(translations[currentLang].alert_success);
-    // Aquí podrías añadir un código para enviar los datos donde necesites (ej. API, Email)
   });
 
 });

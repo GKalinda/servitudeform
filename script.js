@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. CARGA DINÁMICA DE PAÍSES DESDE EL JSON
   function loadCountries() {
     const countryOptionsContainer = document.getElementById('country-options');
+    if (!countryOptionsContainer) return;
     
     fetch('paises.json')
       .then(response => {
@@ -61,12 +62,29 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(error => console.error('Error cargando JSON:', error));
   }
-  
-  // Llamamos a la carga de países inmediatamente
   loadCountries();
 
 
-  // 4. LÓGICA DE LOS DESPLEGABLES PERSONALIZADOS (Con delegación de eventos)
+  // 4. GENERACIÓN DINÁMICA DE AÑOS DE NACIMIENTO (Límite +18 automático)
+  function populateYears() {
+    const yearOptions = document.getElementById('year-options');
+    if (!yearOptions) return;
+
+    const currentYear = new Date().getFullYear();
+    const maxAllowedYear = currentYear - 18; // Solo muestra años que garantizan la mayoría de edad
+
+    for(let i = maxAllowedYear; i >= 1926; i--) {
+      const optionDiv = document.createElement('div');
+      optionDiv.className = 'custom-option';
+      optionDiv.setAttribute('data-value', i);
+      optionDiv.textContent = i;
+      yearOptions.appendChild(optionDiv);
+    }
+  }
+  populateYears();
+
+
+  // 5. LÓGICA DE LOS DESPLEGABLES PERSONALIZADOS (Países y Año)
   const customSelects = document.querySelectorAll('.custom-select-wrapper');
 
   customSelects.forEach(wrapper => {
@@ -74,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const optionsContainer = wrapper.querySelector('.custom-options');
     const hiddenInput = wrapper.querySelector('input[type="hidden"]');
 
-    // Abrir/Cerrar menú dropdown
     trigger.addEventListener('click', function(e) {
       e.stopPropagation();
       customSelects.forEach(otherWrapper => {
@@ -83,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.classList.toggle('open');
     });
 
-    // Delegación de eventos para capturar clicks incluso en opciones generadas dinámicamente (JSON)
     optionsContainer.addEventListener('click', function(e) {
       const targetOption = e.target.closest('.custom-option');
       if (!targetOption) return;
@@ -93,18 +109,17 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger.classList.remove('error');
       wrapper.classList.remove('open');
       
-      // Disparamos eventos para activar el motor de validación en cascada
+      // Lanzamos el cambio para activar la validación en tiempo real
       hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
     });
   });
 
-  // Cerrar selects si se hace click en el fondo de la pantalla
   document.addEventListener('click', () => {
     customSelects.forEach(wrapper => wrapper.classList.remove('open'));
   });
 
 
-  // 5. LÓGICA DEL CONTADOR DE CARACTERES
+  // 6. LÓGICA DEL CONTADOR DE CARACTERES
   const textarea = document.getElementById('busqueda');
   const charCount = document.getElementById('char-count');
 
@@ -116,28 +131,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // 6. VALIDACIÓN EN CASCADA COMPLETA
+  // 7. VALIDACIÓN EN CASCADA COMPLETA E INSTANTÁNEA
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
 
-  // Fieldsets
+  // Bloques de secciones (Fieldsets)
   const sec2 = document.getElementById('section-2');
   const sec3 = document.getElementById('section-3');
   const sec4 = document.getElementById('section-4');
   const sec5 = document.getElementById('section-5');
 
-  // Inputs S2
+  // Inputs a validar
   const s2Alias = document.getElementById('alias');
-  const s2Edad = document.getElementById('edad');
+  const dobYear = document.getElementById('dob-year');
   const s2Country = document.getElementById('country');
   const s2Busqueda = document.getElementById('busqueda');
 
-  // Inputs S3
   const s3Accept = document.getElementById('findom-accept');
   const s3Presupuesto = document.getElementById('presupuesto');
   const s3Limite = document.getElementById('limite-max');
-
-  // Inputs S4
   const s4Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
@@ -146,12 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (s1Valid) sec2.removeAttribute('disabled');
     else sec2.setAttribute('disabled', 'true');
 
-    // ---- VALIDAR SECCIÓN 2 (Límite de edad estricto de 18 a 99) ----
+    // ---- VALIDAR SECCIÓN 2 ----
     const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
     const s2Valid = s1Valid && 
                     s2Alias.value.trim() !== '' && 
-                    s2Edad.value >= 18 && 
-                    s2Edad.value <= 99 && 
+                    dobYear.value !== '' && 
                     s2Country.value !== '' && 
                     expChecked && 
                     s2Busqueda.value.trim() !== '';
@@ -187,15 +198,15 @@ document.addEventListener("DOMContentLoaded", () => {
     else submitBtn.setAttribute('disabled', 'true');
   }
 
-  // Escuchar eventos globales en el formulario
+  // Monitorizar cambios en tiempo real
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
 
 
-  // 7. MANEJO DEL ENVÍO
+  // 8. MANEJO DEL ENVÍO
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
-    alert("¡Perfecto! El formulario ha sido completamente cumplimentado en orden y está listo para ser enviado.");
+    alert("¡Perfecto! El formulario ha sido completamente cumplimentado en orden, respetando los datos de privacidad y está listo para ser enviado.");
   });
 
 });

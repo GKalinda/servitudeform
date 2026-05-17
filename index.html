@@ -51,15 +51,18 @@
       <fieldset id="section-2" class="form-section" disabled>
         <legend>2. Perfil general</legend>
         
-        <div class="form-row">
-          <div class="form-group name-group">
-            <input type="text" id="alias" placeholder=" " required>
-            <label for="alias">Nombre o alias</label>
-          </div>
-          <div class="form-group role-group">
-            <input type="number" id="edad" placeholder=" " min="18" max="99" required>
-            <label for="edad">Edad</label>
-          </div>
+        <div class="form-group">
+          <input type="text" id="alias" placeholder=" " required>
+          <label for="alias">Nombre o alias</label>
+        </div>
+
+        <div class="form-group custom-select-wrapper">
+          <input type="text" id="year-display" class="custom-select-trigger" readonly placeholder=" " required value="">
+          <label for="year-display">Año de nacimiento (Solo año por privacidad)</label>
+          <input type="hidden" id="dob-year" required>
+          <span class="custom-arrow"></span>
+          <div id="year-options" class="custom-options">
+            </div>
         </div>
 
         <div class="form-group custom-select-wrapper">

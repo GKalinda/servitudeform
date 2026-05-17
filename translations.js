@@ -7,7 +7,7 @@ const translations = {
     modal_btn_no: "No soy mayor de edad, Salir",
     goddess_quote: "\"Bienvenido a mi mundo, estar a mis pies es un privilegio y mi tiempo un lujo que se concede a pocos.\"",
     main_title: "Solicitud de Servidumbre",
-    form_intro: "Si estás interesado en rellenar esta encuesta es porque estás a un paso más de convertirte en mi esclavo y ser de mi propiedad.",
+    form_intro: "Si estás interesado en rellenar esta encuesta es porque estás a un paso de convertirte en mi esclavo y ser de mi propiedad.",
     important: "IMPORTANTE:",
     intro_1: "Este formulario es para adultos interesados en una dinámica consensuada de dominación/sumisión.",
     intro_2: "El respeto, el consentimiento y los límites son obligatorios.",

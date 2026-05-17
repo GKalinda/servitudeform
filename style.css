@@ -126,10 +126,10 @@ body {
   background: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 30px; 
-  padding: 10px 20px; /* <-- Aumentado para mayor visibilidad */
+  padding: 10px 20px; 
   cursor: pointer;
   user-select: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* <-- Sombra para que destaque sobre la foto */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
   transition: all 0.3s ease;
 }
 
@@ -141,14 +141,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* <-- Aumentado */
-  font-size: 16px; /* <-- Letra más grande y visible */
+  gap: 10px; 
+  font-size: 16px; 
   font-weight: bold;
   color: var(--text-main);
 }
 
 .lang-arrow {
-  width: 8px; /* <-- Flecha un poco más grande */
+  width: 8px; 
   height: 8px;
   border-right: 2px solid var(--text-muted);
   border-bottom: 2px solid var(--text-muted);
@@ -176,7 +176,7 @@ body {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
-  min-width: 70px; /* <-- Un poco más ancho */
+  min-width: 70px; 
   overflow: hidden;
 }
 
@@ -187,8 +187,8 @@ body {
 }
 
 .lang-dropdown-options span {
-  padding: 12px 20px; /* <-- Botones interiores más grandes */
-  font-size: 15px; /* <-- Letra más grande */
+  padding: 12px 20px; 
+  font-size: 15px; 
   font-weight: bold;
   color: var(--text-main);
   text-align: center;
@@ -568,4 +568,38 @@ button[type="submit"]:disabled {
     padding: 12px;
     font-size: 13px;
   }
+}
+
+/* --- TOOLTIP PARA FETICHES (AVISO FINDOM) --- */
+.has-tooltip {
+  position: relative;
+}
+
+.has-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 30px; 
+  background-color: var(--bg-color);
+  color: var(--accent-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(5px);
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.has-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
 }

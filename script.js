@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "Confirmo que entiendo los límites y condiciones.",
       btn_submit: "Enviar Solicitud",
       sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados a la bandeja de entrada de la Domina.",
+      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente Goddess Kalinda.",
       alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
     },
     en: {
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "I confirm I understand the limits and conditions.",
       btn_submit: "Submit Application",
       sending: "Sending...",
-      alert_success: "Form submitted successfully! Your data has been securely transferred.",
+      alert_success: "Form submitted successfully! Your data has been successfully sent to Goddess Kalinda.",
       alert_error: "There was a problem submitting your application. Please try again."
     }
   };

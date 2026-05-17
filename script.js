@@ -126,19 +126,19 @@ document.addEventListener("DOMContentLoaded", () => {
       { value: "Humillacion", key: "fetish_humiliation" },
       { value: "Findom", key: "fetish_findom" },
       { value: "Adoracion_pies", key: "fetish_foot_worship" },
-      { value: "Pedal_pumping", key: "fetish_pedal_pumping" },
+      { value: "Pedal Pumping", key: "fetish_pedal_pumping" },
       { value: "Cuero", key: "fetish_leather" },
-      { value: "Sumision_total", key: "fetish_submission" },
+      { value: "Sumision Total", key: "fetish_submission" },
       { value: "Spanking", key: "fetish_spanking" },
       { value: "Smoking", key: "fetish_smoking" },
       { value: "Bondage", key: "fetish_bondage" },
       { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
       { value: "Caning", key: "fetish_caning" },
-      { value: "Food_play", key: "fetish_food_play" },
+      { value: "Food Play", key: "fetish_food_play" },
       { value: "Castidad", key: "fetish_chastity" },
       { value: "CBT", key: "fetish_cbt" },
       { value: "Degradacion", key: "fetish_degradation" },
-      { value: "Control_respiracion", key: "fetish_breath_control" }
+      { value: "Control Respiracion", key: "fetish_breath_control" }
     ];
 
     const col1 = document.createElement('div');

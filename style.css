@@ -569,37 +569,3 @@ button[type="submit"]:disabled {
     font-size: 13px;
   }
 }
-
-/* --- TOOLTIP PARA FETICHES (AVISO FINDOM) --- */
-.has-tooltip {
-  position: relative;
-}
-
-.has-tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 30px; 
-  background-color: var(--bg-color);
-  color: var(--accent-color);
-  border: 1px solid var(--border-color);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  transform: translateY(5px);
-  z-index: 100;
-  pointer-events: none;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-}
-
-.has-tooltip:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-5px);
-  border-color: var(--accent-color);
-}

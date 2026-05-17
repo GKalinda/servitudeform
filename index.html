@@ -40,18 +40,21 @@
 
     <form id="findomForm">
       
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="Nueva Solicitud de Formulario Findom / D/s App">
+
       <fieldset id="section-1" class="form-section">
         <legend data-i18n="sec1_title">1. Consentimiento general</legend>
         <label class="checkbox-container">
-          <input type="checkbox" class="consent-cb" required> <span data-i18n="s1_cb1">Entiendo que esta es una dinámica consensuada entre adultos.</span>
+          <input type="checkbox" name="consentimiento_adultos" class="consent-cb" required> <span data-i18n="s1_cb1">Entiendo que esta es una dinámica consensuada entre adultos.</span>
           <span class="checkmark"></span>
         </label>
         <label class="checkbox-container">
-          <input type="checkbox" class="consent-cb" required> <span data-i18n="s1_cb2">Participo voluntariamente sin presión externa.</span>
+          <input type="checkbox" name="consentimiento_voluntario" class="consent-cb" required> <span data-i18n="s1_cb2">Participo voluntariamente sin presión externa.</span>
           <span class="checkmark"></span>
         </label>
         <label class="checkbox-container">
-          <input type="checkbox" class="consent-cb" required> <span data-i18n="s1_cb3">Puedo retirarme en cualquier momento.</span>
+          <input type="checkbox" name="consentimiento_retirada" class="consent-cb" required> <span data-i18n="s1_cb3">Puedo retirarme en cualquier momento.</span>
           <span class="checkmark"></span>
         </label>
       </fieldset>
@@ -61,41 +64,39 @@
         
         <div class="form-row">
           <div class="form-group name-group">
-            <input type="text" id="alias" placeholder=" " required>
+            <input type="text" id="alias" name="alias" placeholder=" " required>
             <label for="alias" data-i18n="s2_alias">Nombre o alias</label>
           </div>
 
           <div class="form-group role-group custom-select-wrapper">
             <input type="text" id="year-display" class="custom-select-trigger" readonly placeholder=" " required value="">
             <label for="year-display" data-i18n="s2_year">Año de nac.</label>
-            <input type="hidden" id="dob-year" required>
+            <input type="hidden" id="dob-year" name="ano_nacimiento" required>
             <span class="custom-arrow"></span>
-            <div id="year-options" class="custom-options">
-              </div>
+            <div id="year-options" class="custom-options"></div>
           </div>
         </div>
 
         <div class="form-group custom-select-wrapper">
           <input type="text" id="country-display" class="custom-select-trigger" readonly placeholder=" " required value="">
           <label for="country-display" data-i18n="s2_country">País</label>
-          <input type="hidden" id="country" required>
+          <input type="hidden" id="country" name="pais" required>
           <span class="custom-arrow"></span>
-          <div id="country-options" class="custom-options">
-            </div>
+          <div id="country-options" class="custom-options"></div>
         </div>
 
         <div class="form-group-spaced">
           <p class="group-label" data-i18n="s2_exp">Experiencia previa:</p>
           <div class="radio-group">
-            <label class="radio-container"><input type="radio" name="experiencia" value="none" required><span class="radiomark"></span> <span data-i18n="exp_1">Ninguna</span></label>
-            <label class="radio-container"><input type="radio" name="experiencia" value="basic"><span class="radiomark"></span> <span data-i18n="exp_2">Básica</span></label>
-            <label class="radio-container"><input type="radio" name="experiencia" value="intermediate"><span class="radiomark"></span> <span data-i18n="exp_3">Intermedia</span></label>
-            <label class="radio-container"><input type="radio" name="experiencia" value="advanced"><span class="radiomark"></span> <span data-i18n="exp_4">Avanzada</span></label>
+            <label class="radio-container"><input type="radio" name="experiencia" value="Ninguna/None" required><span class="radiomark"></span> <span data-i18n="exp_1">Ninguna</span></label>
+            <label class="radio-container"><input type="radio" name="experiencia" value="Basica/Basic"><span class="radiomark"></span> <span data-i18n="exp_2">Básica</span></label>
+            <label class="radio-container"><input type="radio" name="experiencia" value="Intermedia/Intermediate"><span class="radiomark"></span> <span data-i18n="exp_3">Intermedia</span></label>
+            <label class="radio-container"><input type="radio" name="experiencia" value="Avanzada/Advanced"><span class="radiomark"></span> <span data-i18n="exp_4">Avanzada</span></label>
           </div>
         </div>
 
         <div class="form-group">
-          <textarea id="busqueda" placeholder=" " maxlength="200" required></textarea>
+          <textarea id="busqueda" name="que_busca" placeholder=" " maxlength="200" required></textarea>
           <label for="busqueda" data-i18n="s2_search">¿Qué buscas en esta dinámica? (Máx 200 caracteres)</label>
           <div class="char-counter"><span id="char-count">0</span> / 200</div>
         </div>
@@ -107,7 +108,7 @@
         <div class="form-group custom-select-wrapper">
           <input type="text" id="findom-accept-display" class="custom-select-trigger" readonly placeholder=" " required value="">
           <label for="findom-accept-display" data-i18n="s3_accept_lbl">¿Aceptas dinámica de dominación financiera consensuada?</label>
-          <input type="hidden" id="findom-accept" required>
+          <input type="hidden" id="findom-accept" name="acepta_findom" required>
           <span class="custom-arrow"></span>
           <div class="custom-options">
             <div class="custom-option fd-opt" data-value="si" data-i18n="fd_yes">Sí</div>
@@ -118,11 +119,11 @@
 
         <div class="form-row">
           <div class="form-group name-group">
-            <input type="number" id="presupuesto" placeholder=" " min="0" required>
+            <input type="number" id="presupuesto" name="presupuesto_mensual" placeholder=" " min="0" required>
             <label for="presupuesto" data-i18n="s3_budget">Presupuesto mensual voluntario (€/$)</label>
           </div>
           <div class="form-group name-group">
-            <input type="number" id="limite-max" placeholder=" " min="0" required>
+            <input type="number" id="limite-max" name="limite_maximo" placeholder=" " min="0" required>
             <label for="limite-max" data-i18n="s3_limit">Límite máximo absoluto (€/$)</label>
           </div>
         </div>
@@ -130,15 +131,15 @@
         <div class="form-group-spaced">
           <p class="group-label" data-i18n="s3_consent">Entendimiento del consentimiento financiero:</p>
           <label class="checkbox-container">
-            <input type="checkbox" class="s3-cb" required> <span data-i18n="s3_cb1">Entiendo que nunca se me obligará a pagar nada.</span>
+            <input type="checkbox" name="fin_nunca_obligado" class="s3-cb" required> <span data-i18n="s3_cb1">Entiendo que nunca se me obligará a pagar nada.</span>
             <span class="checkmark"></span>
           </label>
           <label class="checkbox-container">
-            <input type="checkbox" class="s3-cb" required> <span data-i18n="s3_cb2">Entiendo que puedo parar en cualquier momento.</span>
+            <input type="checkbox" name="fin_puedo_parar" class="s3-cb" required> <span data-i18n="s3_cb2">Entiendo que puedo parar en cualquier momento.</span>
             <span class="checkmark"></span>
           </label>
           <label class="checkbox-container">
-            <input type="checkbox" class="s3-cb" required> <span data-i18n="s3_cb3">Entiendo que no debo comprometer mi estabilidad financiera.</span>
+            <input type="checkbox" name="fin_no_comprometer_estabilidad" class="s3-cb" required> <span data-i18n="s3_cb3">Entiendo que no debo comprometer mi estabilidad financiera.</span>
             <span class="checkmark"></span>
           </label>
         </div>
@@ -149,13 +150,13 @@
         <div class="form-group-spaced">
           <p class="group-label" data-i18n="s4_method">Método de contacto preferido:</p>
           <div class="radio-group">
-            <label class="radio-container"><input type="radio" name="contacto" value="Telegram" required><span class="radiomark"></span> Telegram</label>
-            <label class="radio-container"><input type="radio" name="contacto" value="Twitter"><span class="radiomark"></span> Twitter / X</label>
-            <label class="radio-container"><input type="radio" name="contacto" value="Correo"><span class="radiomark"></span> <span data-i18n="s4_mail">Correo</span></label>
+            <label class="radio-container"><input type="radio" name="metodo_contacto" value="Telegram" required><span class="radiomark"></span> Telegram</label>
+            <label class="radio-container"><input type="radio" name="metodo_contacto" value="Twitter/X"><span class="radiomark"></span> Twitter / X</label>
+            <label class="radio-container"><input type="radio" name="metodo_contacto" value="Correo/Email"><span class="radiomark"></span> <span data-i18n="s4_mail">Correo</span></label>
           </div>
         </div>
         <div class="form-group">
-          <input type="text" id="usuario-contacto" placeholder=" " required>
+          <input type="text" id="usuario-contacto" name="usuario_contacto" placeholder=" " required>
           <label for="usuario-contacto" data-i18n="s4_user">Usuario / Email de contacto</label>
         </div>
       </fieldset>
@@ -165,15 +166,15 @@
         <div class="form-group-spaced">
           <p class="group-label" data-i18n="s5_rules">Normas de conducta:</p>
           <label class="checkbox-container">
-            <input type="checkbox" class="s5-cb" required> <span data-i18n="s5_cb1">Entiendo que el respeto es obligatorio en ambas direcciones.</span>
+            <input type="checkbox" name="norma_respeto" class="s5-cb" required> <span data-i18n="s5_cb1">Entiendo que el respeto es obligatorio en ambas direcciones.</span>
             <span class="checkmark"></span>
           </label>
           <label class="checkbox-container">
-            <input type="checkbox" class="s5-cb" required> <span data-i18n="s5_cb2">Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.</span>
+            <input type="checkbox" name="norma_rechazo" class="s5-cb" required> <span data-i18n="s5_cb2">Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.</span>
             <span class="checkmark"></span>
           </label>
           <label class="checkbox-container">
-            <input type="checkbox" class="s5-cb" required> <span data-i18n="s5_cb3">Entiendo que esta dinámica puede terminar en cualquier momento.</span>
+            <input type="checkbox" name="norma_terminar" class="s5-cb" required> <span data-i18n="s5_cb3">Entiendo que esta dinámica puede terminar en cualquier momento.</span>
             <span class="checkmark"></span>
           </label>
         </div>
@@ -181,15 +182,15 @@
         <div class="form-group-spaced">
           <p class="group-label" data-i18n="s5_confirm">Confirmación final:</p>
           <label class="checkbox-container">
-            <input type="checkbox" class="s5-cb" required> <span data-i18n="s5_cb4">Confirmo que todo lo anterior es verdadero.</span>
+            <input type="checkbox" name="confirmacion_verdadero" class="s5-cb" required> <span data-i18n="s5_cb4">Confirmo que todo lo anterior es verdadero.</span>
             <span class="checkmark"></span>
           </label>
           <label class="checkbox-container">
-            <input type="checkbox" class="s5-cb" required> <span data-i18n="s5_cb5">Confirmo que participo voluntariamente.</span>
+            <input type="checkbox" name="confirmacion_voluntario" class="s5-cb" required> <span data-i18n="s5_cb5">Confirmo que participo voluntariamente.</span>
             <span class="checkmark"></span>
           </label>
           <label class="checkbox-container">
-            <input type="checkbox" class="s5-cb" required> <span data-i18n="s5_cb6">Confirmo que entiendo los límites y condiciones.</span>
+            <input type="checkbox" name="confirmacion_limites" class="s5-cb" required> <span data-i18n="s5_cb6">Confirmo que entiendo los límites y condiciones.</span>
             <span class="checkmark"></span>
           </label>
         </div>

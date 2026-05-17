@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { value: "Bondage", key: "fetish_bondage" },
       { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
       { value: "Caning", key: "fetish_caning" },
-      { value: "Food Play", key: "fetish_food_play" },
+      { value: "Pantyhose Fetish", key: "fetish_food_play" },
       { value: "Castidad", key: "fetish_chastity" },
       { value: "CBT", key: "fetish_cbt" },
       { value: "Degradacion", key: "fetish_degradation" },

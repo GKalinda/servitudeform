@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!yearOptions) return;
 
     const currentYear = new Date().getFullYear();
-    const maxAllowedYear = currentYear - 18; // Solo muestra años que garantizan la mayoría de edad
+    const maxAllowedYear = currentYear - 18; // Solo muestra años válidos para mayores de edad
 
     for(let i = maxAllowedYear; i >= 1926; i--) {
       const optionDiv = document.createElement('div');

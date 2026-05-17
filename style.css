@@ -5,24 +5,8 @@
   padding: 0;
 }
 
-/* --- VARIABLES DE COLOR (Modo Claro por defecto) --- */
+/* --- VARIABLES DE COLOR (Nativo Oscuro Permanente) --- */
 :root {
-  --bg-color: #f0f2f5;
-  --container-bg: #ffffff;
-  --text-main: #333333;
-  --text-muted: #666666;
-  --border-color: #cccccc;
-  --label-color: #aaaaaa;
-  --accent-color: #d4af7f;
-  --container-shadow: rgba(0,0,0,0.08);
-  --option-hover-bg: #d4af7f; 
-  --option-hover-color: #ffffff; 
-  --modal-overlay: rgba(0, 0, 0, 0.8);
-  --error-color: #e74c3c;
-}
-
-/* --- VARIABLES DE COLOR (Modo Oscuro) --- */
-body.dark-mode {
   --bg-color: #121212;
   --container-bg: #1e1e1e;
   --text-main: #e0e0e0;
@@ -34,6 +18,7 @@ body.dark-mode {
   --option-hover-bg: #d4af7f;
   --option-hover-color: #121212; 
   --modal-overlay: rgba(0, 0, 0, 0.9);
+  --error-color: #e74c3c;
 }
 
 body {
@@ -43,7 +28,6 @@ body {
   display: flex;
   justify-content: center;
   padding: 50px 10px;
-  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 /* --- MODAL +18 --- */
@@ -103,55 +87,132 @@ body {
   max-width: 700px;
   width: 100%;
   box-shadow: 0 10px 30px var(--container-shadow);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; 
 }
 
-/* --- CONTROLES SUPERIORES (Idioma y Tema) --- */
+/* --- DEGRADADO E IMAGEN DE FONDO --- */
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 580px;
+  background-image: linear-gradient(to bottom, rgba(30,30,30,0) 0%, rgba(30,30,30,0) 50%, rgba(30,30,30,0.85) 85%, var(--container-bg) 100%), url('Images/gk.jpg');
+  background-size: cover;
+  background-position: center 20%; 
+  z-index: 0;
+  pointer-events: none; 
+}
+
+.container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- CONTROLES SUPERIORES (Desplegable de Idioma Mejorado) --- */
 .top-controls {
   position: absolute;
   top: 25px;
-  right: 25px;
+  right: 30px;
   display: flex;
+  justify-content: flex-end; 
   align-items: center;
-  gap: 15px;
+  z-index: 100;
 }
 
-button#theme-toggle {
-  background: transparent;
-  color: var(--text-main);
-  padding: 0;
-  border: none;
-  font-size: 22px;
+.lang-dropdown-wrapper {
+  position: relative;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 30px; 
+  padding: 10px 20px; /* <-- Aumentado para mayor visibilidad */
   cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-button#theme-toggle:hover {
-  transform: scale(1.1);
-}
-
-.lang-toggle {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-muted);
   user-select: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* <-- Sombra para que destaque sobre la foto */
+  transition: all 0.3s ease;
+}
+
+.lang-dropdown-wrapper:hover {
+  border-color: var(--accent-color);
+}
+
+.lang-dropdown-trigger {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px; /* <-- Aumentado */
+  font-size: 16px; /* <-- Letra más grande y visible */
+  font-weight: bold;
+  color: var(--text-main);
 }
 
-.lang-toggle span {
-  cursor: pointer;
-  transition: color 0.3s ease;
+.lang-arrow {
+  width: 8px; /* <-- Flecha un poco más grande */
+  height: 8px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.lang-toggle span.active { color: var(--accent-color); }
-.lang-toggle span:hover:not(.active) { color: var(--text-main); }
+.lang-dropdown-wrapper.open .lang-arrow {
+  transform: translateY(2px) rotate(225deg);
+  border-color: var(--accent-color);
+}
 
-.lang-toggle .separator {
-  margin: 0 6px;
-  color: var(--border-color);
-  cursor: default;
-  font-weight: 300;
+.lang-dropdown-options {
+  position: absolute;
+  top: 100%; 
+  right: 0;
+  background: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--container-shadow);
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  min-width: 70px; /* <-- Un poco más ancho */
+  overflow: hidden;
+}
+
+.lang-dropdown-wrapper.open .lang-dropdown-options {
+  opacity: 1; 
+  visibility: visible; 
+  transform: translateY(0);
+}
+
+.lang-dropdown-options span {
+  padding: 12px 20px; /* <-- Botones interiores más grandes */
+  font-size: 15px; /* <-- Letra más grande */
+  font-weight: bold;
+  color: var(--text-main);
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lang-dropdown-options span:hover {
+  background: var(--option-hover-bg);
+  color: var(--option-hover-color);
+}
+
+/* --- FRASE PERSONALIZADA --- */
+.goddess-quote {
+  text-align: center;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-main);
+  margin-top: 400px; 
+  margin-bottom: 60px; 
+  padding: 0 20px;
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 10px var(--container-bg), 0 0 20px var(--container-bg); 
 }
 
 h1 {
@@ -160,7 +221,22 @@ h1 {
   text-align: center;
   color: var(--accent-color);
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px; 
+}
+
+/* --- DECLARACIÓN DE AUTORIDAD --- */
+.master-statement {
+  text-align: center;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--text-main);
+  padding: 30px 20px;
+  margin: 10px auto 40px auto;
+  max-width: 85%;
+  border-top: 1px solid var(--accent-color);
+  border-bottom: 1px solid var(--accent-color);
+  line-height: 1.6;
 }
 
 .intro-warning {
@@ -204,10 +280,6 @@ form {
 
 .role-group { flex: 0 0 35%; }
 .name-group { flex: 1; }
-
-@media (max-width: 480px) {
-  .form-row { flex-direction: column; gap: 0; }
-}
 
 .form-group {
   position: relative;
@@ -425,7 +497,7 @@ fieldset:disabled {
 
 button[type="submit"] {
   background: var(--accent-color);
-  color: #fff;
+  color: #121212;
   border: none;
   padding: 16px;
   border-radius: 12px;
@@ -448,4 +520,52 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+/* =========================================================
+   DISEÑO RESPONSIVO (ESPECÍFICO PARA MÓVILES Y TABLETS)
+   ========================================================= */
+@media (max-width: 600px) {
+  
+  .container {
+    padding: 30px 20px;
+  }
+  
+  .top-controls {
+    top: 15px;
+    right: 15px;
+  }
+
+  .container::before {
+    height: 400px; 
+    background-position: center 10%; 
+    background-image: linear-gradient(to bottom, rgba(30,30,30,0) 0%, rgba(30,30,30,0) 45%, rgba(30,30,30,0.9) 80%, var(--container-bg) 100%), url('Images/gk.jpg');
+  }
+
+  .goddess-quote {
+    margin-top: 250px; 
+    margin-bottom: 40px;
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .master-statement {
+    font-size: 16px;
+    padding: 20px 15px;
+    max-width: 95%; 
+    margin-bottom: 30px;
+  }
+
+  .form-row { 
+    flex-direction: column; 
+    gap: 15px; 
+  }
+  
+  .intro-warning {
+    padding: 12px;
+    font-size: 13px;
+  }
 }

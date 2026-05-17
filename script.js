@@ -165,10 +165,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- 3. MODO CLARO / OSCURO ---
   const themeToggle = document.getElementById('theme-toggle');
+  const localTheme = localStorage.getItem('theme');
   
-  if (localStorage.getItem('theme') === 'dark') {
+  if (localTheme === 'dark' || !localTheme) {
     document.body.classList.add('dark-mode');
-    themeToggle.textContent = '☀️';
+    if (themeToggle) themeToggle.textContent = '☀️';
+    if (!localTheme) localStorage.setItem('theme', 'dark'); 
+  } else {
+    document.body.classList.remove('dark-mode');
+    if (themeToggle) themeToggle.textContent = '🌙';
   }
 
   themeToggle.addEventListener('click', () => {

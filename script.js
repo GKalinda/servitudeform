@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "Confirmo que entiendo los límites y condiciones.",
       btn_submit: "Enviar Solicitud",
       sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados de forma segura.",
+      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados a la bandeja de entrada de la Domina.",
       alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
     },
     en: {
@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // --- 4. CARGA DINÁMICA DE PAÍSES ---
+  let countriesRawData = []; 
   function loadCountries() {
     const countryOptionsContainer = document.getElementById('country-options');
     if (!countryOptionsContainer) return;
@@ -193,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch('paises.json')
       .then(response => response.json())
       .then(data => {
+        countriesRawData = data;
         data.sort((a, b) => a[currentLang].localeCompare(b[currentLang]));
         
         data.forEach(pais => {
@@ -295,25 +297,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const s4Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
+    // SECCIÓN 1 -> Abre SECCIÓN 2
     const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
     if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
+    // SECCIÓN 2 -> Abre SECCIÓN 3
     const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
     const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
                     s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
     if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
 
+    // SECCIÓN 3 -> Abre SECCIÓN 4
     const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
     const s3Valid = s2Valid && s3Accept.value !== '' && s3Presupuesto.value !== '' && 
                     s3Limite.value !== '' && s3CbsValid;
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    // AQUÍ ESTABA EL ERROR: Cambiado 'contacto' por 'metodo_contacto' para que coincida con el HTML
+    // SECCIÓN 4 -> Abre SECCIÓN 5
     const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
-    
     const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
     if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
+    // SECCIÓN 5 -> Desbloquea el BOTÓN
     const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
     const s5Valid = s4Valid && s5CbsValid;
     if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
@@ -323,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener('change', validateForm);
 
   
-  // --- 9. ENVIAR FORMULARIO POR AJAX A TU EMAIL ---
+  // --- 9. ENVIAR FORMULARIO POR AJAX A TU EMAIL (FORMSUBMIT) ---
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
     
@@ -331,21 +336,64 @@ document.addEventListener("DOMContentLoaded", () => {
     const originalText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].sending;
 
+    // Traducir país seleccionado para el email
+    let paisSeleccionado = s2Country.value;
+    const findPais = countriesRawData.find(p => p.code === s2Country.value);
+    if (findPais) paisSeleccionado = findPais.es;
+
+    // Traducir opciones Findom para el email
+    let findomTexto = s3Accept.value;
+    if(s3Accept.value === "si") findomTexto = "Sí / Yes";
+    if(s3Accept.value === "no") findomTexto = "No";
+    if(s3Accept.value === "depende") findomTexto = "Depende de condiciones / Conditional";
+
+    const expRadio = document.querySelector('input[name="experiencia"]:checked');
+    const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
+
+    // CONSTRUIMOS EL OBJETO CON CLAVES HUMANAS Y EN ORDEN
+    const readableData = {
+      "_subject": `Nueva Solicitud Findom: ${s2Alias.value.trim()}`,
+      "1. Consentimiento General": "Aceptado y marcado (3/3 casillas)",
+      "2. Nombre o Alias": s2Alias.value.trim(),
+      "2. Año de Nacimiento": dobYear.value,
+      "2. País de Residencia": paisSeleccionado,
+      "2. Experiencia Previa": expRadio ? expRadio.value : "No especificado",
+      "2. ¿Qué busca en la dinámica?": s2Busqueda.value.trim(),
+      "3. ¿Acepta dinámica Findom?": findomTexto,
+      "3. Presupuesto Mensual Voluntario": `${s3Presupuesto.value} €/$`,
+      "3. Límite Máximo Absoluto": `${s3Limite.value} €/$`,
+      "3. Consentimiento Financiero": "Entendido y aceptado (3/3 casillas)",
+      "4. Método de Contacto Preferido": contactoRadio ? contactoRadio.value : "No especificado",
+      "4. Cuenta / Email de Contacto": s4Usuario.value.trim(),
+      "5. Normas de Conducta": "Leídas y aceptadas (3/3 casillas)",
+      "5. Confirmación Final": "Declarado como verdadero (3/3 casillas)",
+      "Idioma de Relleno": currentLang.toUpperCase()
+    };
+
     fetch("https://formsubmit.co/ajax/goddeskalinda@gmail.com", {
         method: "POST",
-        body: new FormData(form)
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(readableData)
     })
-    .then(response => {
-        if (response.ok) {
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
             alert(translations[currentLang].alert_success);
             form.reset(); 
+            document.getElementById('year-display').value = '';
+            document.getElementById('country-display').value = '';
+            document.getElementById('findom-accept-display').value = '';
             validateForm(); 
         } else {
-            throw new Error();
+            throw new Error(data.message);
         }
     })
-    .catch(() => {
-        alert(translations[currentLang].alert_error);
+    .catch((error) => {
+        console.error("Error FormSubmit:", error);
+        alert(translations[currentLang].alert_error + "\n\n(Recuerda hacer click en el enlace de activación que FormSubmit envía a tu correo la primera vez).");
     })
     .finally(() => {
         submitBtn.textContent = originalText;

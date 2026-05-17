@@ -167,13 +167,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.getElementById('theme-toggle');
   const localTheme = localStorage.getItem('theme');
   
-  if (localTheme === 'dark' || !localTheme) {
-    document.body.classList.add('dark-mode');
-    if (themeToggle) themeToggle.textContent = '☀️';
-    if (!localTheme) localStorage.setItem('theme', 'dark'); 
-  } else {
+  if (localTheme === 'light') {
     document.body.classList.remove('dark-mode');
     if (themeToggle) themeToggle.textContent = '🌙';
+  } else {
+    document.body.classList.add('dark-mode');
+    if (themeToggle) themeToggle.textContent = '☀️';
   }
 
   themeToggle.addEventListener('click', () => {

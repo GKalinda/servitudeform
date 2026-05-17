@@ -411,7 +411,9 @@ button#theme-toggle:hover {
 
 .custom-options {
   position: absolute;
-  top: 100%; left: 0; right: 0;
+  top: 100%; 
+  left: 0; 
+  right: 0;
   background: var(--container-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -421,10 +423,31 @@ button#theme-toggle:hover {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
-  overflow: hidden;
   margin-top: 5px;
+  
+  /* NUEVO: Limitamos la altura y añadimos el scroll */
+  max-height: 320px; /* Muestra unas 7-8 opciones (aprox 40px por opción) */
+  overflow-y: auto;  /* Activa el scroll vertical */
 }
 
+/* ESTILO PARA LA BARRA DE SCROLL (WebKit) */
+.custom-options::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-options::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  border-radius: 0 8px 8px 0;
+}
+
+.custom-options::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 8px;
+}
+
+.custom-options::-webkit-scrollbar-thumb:hover {
+  background: var(--label-color);
+}
 .custom-select-wrapper.open .custom-options {
   opacity: 1; visibility: visible; transform: translateY(0);
 }

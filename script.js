@@ -390,3 +390,5 @@ document.addEventListener("DOMContentLoaded", () => {
         validateForm();
     });
   });
+
+});

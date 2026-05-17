@@ -1,93 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   
-  // --- 0. DICCIONARIO DE TRADUCCIONES ---
-  const translations = {
-    es: {
-      modal_title: "⚠️ Aviso de Contenido +18",
-      modal_desc: "Este sitio web contiene material e información dirigida exclusivamente a personas mayores de 18 años (o la mayoría de edad legal en tu jurisdicción).",
-      modal_btn_yes: "Soy mayor de 18 años, Entrar",
-      modal_btn_no: "No soy mayor de edad, Salir",
-      main_title: "Solicitud Servidumbre",
-      important: "IMPORTANTE:",
-      intro_1: "Este formulario es para adultos interesados en una dinámica consensuada de dominación/sumisión.",
-      intro_2: "El respeto, el consentimiento y los límites son obligatorios.",
-      intro_3: "Este formulario no implica aceptación automática.",
-      sec1_title: "1. Consentimiento general",
-      s1_cb1: "Entiendo que esta es una dinámica consensuada entre adultos.",
-      s1_cb2: "Participo voluntariamente sin presión externa.",
-      s1_cb3: "Puedo retirarme en cualquier momento.",
-      sec2_title: "2. Perfil general",
-      s2_alias: "Nombre o alias",
-      s2_year: "Año de nac.",
-      s2_country: "País",
-      s2_exp: "Experiencia previa:",
-      exp_1: "Ninguna", exp_2: "Básica", exp_3: "Intermedia", exp_4: "Avanzada",
-      s2_search: "¿Qué buscas en esta dinámica?",
-      sec3_title: "3. Contacto",
-      s3_method: "Método de contacto preferido:",
-      s3_mail: "Correo",
-      s3_user: "Usuario / Email de contacto",
-      sec4_title: "4. Normas y Final",
-      s4_rules: "Normas de conducta:",
-      s4_cb1: "Entiendo que el respeto es obligatorio.",
-      s4_cb2: "Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.",
-      s4_cb3: "Entiendo que esta dinámica puede terminar en cualquier momento.",
-      s4_confirm: "Confirmación final:",
-      s4_cb4: "Confirmo que todo lo anterior es verdadero.",
-      s4_cb5: "Confirmo que participo voluntariamente.",
-      s4_cb6: "Confirmo que entiendo los límites y condiciones.",
-      btn_submit: "Enviar Solicitud",
-      sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente a Goddess Kalinda.",
-      alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
-    },
-    en: {
-      modal_title: "⚠️ +18 Content Warning",
-      modal_desc: "This website contains material and information directed exclusively to persons over 18 years of age (or the legal age of majority in your jurisdiction).",
-      modal_btn_yes: "I am over 18, Enter",
-      modal_btn_no: "I am underage, Exit",
-      main_title: "Servitude Form",
-      important: "IMPORTANT:",
-      intro_1: "This form is for adults interested in a consensual domination/submission dynamic.",
-      intro_2: "Respect, consent, and boundaries are mandatory.",
-      intro_3: "This form does not imply automatic acceptance.",
-      sec1_title: "1. General Consent",
-      s1_cb1: "I understand this is a consensual dynamic between adults.",
-      s1_cb2: "I participate voluntarily without external pressure.",
-      s1_cb3: "I can withdraw at any time.",
-      sec2_title: "2. General Profile",
-      s2_alias: "Name or Alias",
-      s2_year: "Birth Year",
-      s2_country: "Country",
-      s2_exp: "Previous experience:",
-      exp_1: "None", exp_2: "Basic", exp_3: "Intermediate", exp_4: "Advanced",
-      s2_search: "What are you looking for in this dynamic?",
-      sec3_title: "3. Contact",
-      s3_method: "Preferred contact method:",
-      s3_mail: "Email",
-      s3_user: "Contact Username / Email",
-      sec4_title: "4. Rules and Final",
-      s4_rules: "Code of conduct:",
-      s4_cb1: "I understand that respect is mandatory.",
-      s4_cb2: "I understand I can be rejected or blocked if I don't fit.",
-      s4_cb3: "I understand this dynamic can end at any time.",
-      s4_confirm: "Final confirmation:",
-      s4_cb4: "I confirm everything above is true.",
-      s4_cb5: "I confirm I participate voluntarily.",
-      s4_cb6: "I confirm I understand the limits and conditions.",
-      btn_submit: "Submit Application",
-      sending: "Sending...",
-      alert_success: "Form submitted successfully! Your data has been successfully sent to Goddess Kalinda.",
-      alert_error: "There was a problem submitting your application. Please try again."
-    }
-  };
+  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA (INGLÉS POR DEFECTO) ---
+  let currentLang = 'en';
 
-  let currentLang = 'es';
-
-  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA ---
   function changeLanguage(lang) {
     currentLang = lang;
     
+    // Traducir todos los textos con la etiqueta data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (translations[lang] && translations[lang][key]) {
@@ -96,28 +15,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadCountries();
+    populateFetishes(); 
   }
 
-  // --- 1.5 LÓGICA DEL INTERRUPTOR DE IDIOMA VISUAL ---
-  const langEsBtn = document.getElementById('lang-es');
-  const langEnBtn = document.getElementById('lang-en');
+  // Ejecuta la traducción inicial
+  changeLanguage('en'); 
 
-  langEsBtn.addEventListener('click', () => {
-    if (currentLang !== 'es') {
-      langEsBtn.classList.add('active');
-      langEnBtn.classList.remove('active');
-      changeLanguage('es');
-    }
+  // --- 1.5 INTERRUPTOR DE IDIOMAS DESPLEGABLE ---
+  const langDropdown = document.getElementById('lang-dropdown');
+  const currentLangSpan = document.getElementById('current-lang');
+  const langOptions = langDropdown.querySelectorAll('.lang-dropdown-options span');
+
+  langDropdown.querySelector('.lang-dropdown-trigger').addEventListener('click', (e) => {
+    e.stopPropagation();
+    langDropdown.classList.toggle('open');
+    // Cerrar los otros campos desplegables si se abre el idioma
+    document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
   });
 
-  langEnBtn.addEventListener('click', () => {
-    if (currentLang !== 'en') {
-      langEnBtn.classList.add('active');
-      langEsBtn.classList.remove('active');
-      changeLanguage('en');
-    }
+  langOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const selectedLang = option.getAttribute('data-lang');
+      if (currentLang !== selectedLang) {
+        currentLangSpan.textContent = option.textContent;
+        changeLanguage(selectedLang);
+      }
+      langDropdown.classList.remove('open');
+    });
   });
-
 
   // --- 2. MODAL DE AVISO +18 ---
   const ageModal = document.getElementById('age-modal');
@@ -138,27 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   btnDecline.addEventListener('click', () => window.location.href = "https://www.google.com");
 
 
-  // --- 3. MODO CLARO / OSCURO ---
-  const themeToggle = document.getElementById('theme-toggle');
-
-  if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode');
-    themeToggle.textContent = '☀️';
-  }
-
-  themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    if (document.body.classList.contains('dark-mode')) {
-      themeToggle.textContent = '☀️';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      themeToggle.textContent = '🌙';
-      localStorage.setItem('theme', 'light');
-    }
-  });
-
-
-  // --- 4. CARGA DINÁMICA DE PAÍSES ---
+  // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 
   function loadCountries() {
     const countryOptionsContainer = document.getElementById('country-options');
@@ -192,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCountries();
 
 
-  // --- 5. GENERACIÓN DINÁMICA DE AÑO (+18) ---
+  // --- 4. GENERACIÓN DINÁMICA DE AÑO (+18) ---
   function populateYears() {
     const yearOptions = document.getElementById('year-options');
     if (!yearOptions) return;
@@ -210,6 +115,72 @@ document.addEventListener("DOMContentLoaded", () => {
   populateYears();
 
 
+  // --- 5. GENERACIÓN DINÁMICA DE FETICHES ---
+  function populateFetishes() {
+    const container = document.getElementById('fetishes-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const fetishes = [
+      { value: "Humillacion", key: "fetish_humiliation" },
+      { value: "Findom", key: "fetish_findom" },
+      { value: "Adoracion_pies", key: "fetish_foot_worship" },
+      { value: "Pedal_pumping", key: "fetish_pedal_pumping" },
+      { value: "Cuero", key: "fetish_leather" },
+      { value: "Sumision_total", key: "fetish_submission" },
+      { value: "Spanking", key: "fetish_spanking" },
+      { value: "Smoking", key: "fetish_smoking" },
+      { value: "Bondage", key: "fetish_bondage" },
+      { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
+      { value: "Caning", key: "fetish_caning" },
+      { value: "Food_play", key: "fetish_food_play" },
+      { value: "Castidad", key: "fetish_chastity" },
+      { value: "CBT", key: "fetish_cbt" },
+      { value: "Degradacion", key: "fetish_degradation" },
+      { value: "Control_respiracion", key: "fetish_breath_control" }
+    ];
+
+    const col1 = document.createElement('div');
+    col1.className = 'name-group'; 
+    
+    const col2 = document.createElement('div');
+    col2.className = 'name-group';
+
+    fetishes.forEach((fetish, index) => {
+      const label = document.createElement('label');
+      label.className = 'checkbox-container';
+
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.name = 'fetiches';
+      input.value = fetish.value;
+
+      const spanText = document.createElement('span');
+      spanText.setAttribute('data-i18n', fetish.key);
+      spanText.textContent = translations[currentLang][fetish.key];
+      
+      const spanCheck = document.createElement('span');
+      spanCheck.className = 'checkmark';
+
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(' '));
+      label.appendChild(spanText);
+      label.appendChild(spanCheck);
+
+      if (index < 8) {
+        col1.appendChild(label);
+      } else {
+        col2.appendChild(label);
+      }
+    });
+
+    container.appendChild(col1);
+    container.appendChild(col2);
+  }
+  populateFetishes();
+
+
   // --- 6. MENÚS DESPLEGABLES PERSONALIZADOS ---
   const customSelects = document.querySelectorAll('.custom-select-wrapper');
 
@@ -221,6 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger.addEventListener('click', function(e) {
       e.stopPropagation();
       customSelects.forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
+      // Cierra también el menú de idiomas
+      langDropdown.classList.remove('open');
       wrapper.classList.toggle('open');
     });
 
@@ -237,8 +210,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Cerrar cualquier menú al hacer clic en otra parte de la pantalla
   document.addEventListener('click', () => {
     customSelects.forEach(w => w.classList.remove('open'));
+    langDropdown.classList.remove('open');
   });
 
 
@@ -260,33 +235,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const sec2 = document.getElementById('section-2');
   const sec3 = document.getElementById('section-3');
   const sec4 = document.getElementById('section-4');
+  const sec5 = document.getElementById('section-5');
   
   const s2Alias = document.getElementById('alias');
   const dobYear = document.getElementById('dob-year');
   const s2Country = document.getElementById('country');
   const s2Busqueda = document.getElementById('busqueda');
-  const s3Usuario = document.getElementById('usuario-contacto');
+  const s4Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
-    // SECCIÓN 1 -> Abre SECCIÓN 2
     const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
     if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
-    // SECCIÓN 2 -> Abre SECCIÓN 3 (Contacto)
     const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
     const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
                     s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
     if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
 
-    // SECCIÓN 3 (Contacto) -> Abre SECCIÓN 4 (Normas)
-    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
-    const s3Valid = s2Valid && contactoChecked && s3Usuario.value.trim() !== '';
+    const s3Valid = s2Valid; 
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    // SECCIÓN 4 -> Desbloquea el BOTÓN
-    const s4CbsValid = Array.from(document.querySelectorAll('.s4-cb')).every(cb => cb.checked);
-    const s4Valid = s3Valid && s4CbsValid;
-    if (s4Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
+    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
+    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
+    if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
+
+    const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
+    const s5Valid = s4Valid && s5CbsValid;
+    if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
   }
 
   form.addEventListener('input', validateForm);
@@ -301,13 +276,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const originalText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].sending;
 
-    // Traducir país seleccionado para el email
     let paisSeleccionado = s2Country.value;
     const findPais = countriesRawData.find(p => p.code === s2Country.value);
     if (findPais) paisSeleccionado = findPais.es;
 
     const expRadio = document.querySelector('input[name="experiencia"]:checked');
     const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
+
+    const fetichesSeleccionados = Array.from(document.querySelectorAll('input[name="fetiches"]:checked'))
+                                       .map(cb => cb.value)
+                                       .join(", ");
+    const otrosFetichesText = document.getElementById('otros-fetiches').value.trim();
 
     const templateParams = {
       subject: `Nueva Solicitud D/s: ${s2Alias.value.trim()}`,
@@ -317,21 +296,22 @@ document.addEventListener("DOMContentLoaded", () => {
       country: paisSeleccionado,
       experience: expRadio ? expRadio.value : "",
       search: s2Busqueda.value.trim(),
+      fetishes: fetichesSeleccionados || "Ninguno seleccionado",
+      other_fetishes: otrosFetichesText || "Ninguno especificado",
       contact_method: contactoRadio ? contactoRadio.value : "",
-      contact_user: s3Usuario.value.trim(),
+      contact_user: s4Usuario.value.trim(),
       language: currentLang.toUpperCase()
     };
 
     emailjs.send(
       "service_pvx93jh",
-      "template_sqp4qrl", // Recuerda verificar que la plantilla en EmailJS ya no dependa de las variables borradas
+      "template_sqp4qrl", 
       templateParams
     )
     .then(() => {
         alert(translations[currentLang].alert_success);
         form.reset();
 
-        // 🔥 IMPORTANTE: reactivar validación SIN romper selects
         setTimeout(() => {
           form.dispatchEvent(new Event('input', { bubbles: true }));
           form.dispatchEvent(new Event('change', { bubbles: true }));

@@ -1,6 +1,130 @@
 document.addEventListener("DOMContentLoaded", () => {
   
-  // 1. LÓGICA DEL MODAL +18
+  // --- 0. DICCIONARIO DE TRADUCCIONES ---
+  const translations = {
+    es: {
+      modal_title: "⚠️ Aviso de Contenido +18",
+      modal_desc: "Este sitio web contiene material e información dirigida exclusivamente a personas mayores de 18 años (o la mayoría de edad legal en tu jurisdicción).",
+      modal_btn_yes: "Soy mayor de 18 años, Entrar",
+      modal_btn_no: "No soy mayor de edad, Salir",
+      main_title: "Aplicación D/s",
+      important: "IMPORTANTE:",
+      intro_1: "Esta aplicación es para adultos interesados en una dinámica consensuada de dominación/sumisión.",
+      intro_2: "El respeto, el consentimiento y los límites son obligatorios.",
+      intro_3: "Este formulario no implica aceptación automática.",
+      sec1_title: "1. Consentimiento general",
+      s1_cb1: "Entiendo que esta es una dinámica consensuada entre adultos.",
+      s1_cb2: "Participo voluntariamente sin presión externa.",
+      s1_cb3: "Puedo retirarme en cualquier momento.",
+      sec2_title: "2. Perfil general",
+      s2_alias: "Nombre o alias",
+      s2_year: "Año de nac.",
+      s2_country: "País",
+      s2_exp: "Experiencia previa:",
+      exp_1: "Ninguna", exp_2: "Básica", exp_3: "Intermedia", exp_4: "Avanzada",
+      s2_search: "¿Qué buscas en esta dinámica? (Máx 200 caracteres)",
+      sec3_title: "3. Findom",
+      s3_accept_lbl: "¿Aceptas dinámica de dominación financiera consensuada?",
+      fd_yes: "Sí", fd_no: "No", fd_dep: "Depende de condiciones",
+      s3_budget: "Presupuesto mensual voluntario (€/$)",
+      s3_limit: "Límite máximo absoluto (€/$)",
+      s3_consent: "Entendimiento del consentimiento financiero:",
+      s3_cb1: "Entiendo que nunca se me obligará a pagar nada.",
+      s3_cb2: "Entiendo que puedo parar en cualquier momento.",
+      s3_cb3: "Entiendo que no debo comprometer mi estabilidad financiera.",
+      sec4_title: "4. Contacto",
+      s4_method: "Método de contacto preferido:",
+      s4_mail: "Correo",
+      s4_user: "Usuario / Email de contacto",
+      sec5_title: "5. Normas y Final",
+      s5_rules: "Normas de conducta:",
+      s5_cb1: "Entiendo que el respeto es obligatorio en ambas direcciones.",
+      s5_cb2: "Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.",
+      s5_cb3: "Entiendo que esta dinámica puede terminar en cualquier momento.",
+      s5_confirm: "Confirmación final:",
+      s5_cb4: "Confirmo que todo lo anterior es verdadero.",
+      s5_cb5: "Confirmo que participo voluntariamente.",
+      s5_cb6: "Confirmo que entiendo los límites y condiciones.",
+      btn_submit: "Enviar Solicitud",
+      alert_success: "¡Perfecto! El formulario ha sido completamente cumplimentado."
+    },
+    en: {
+      modal_title: "⚠️ +18 Content Warning",
+      modal_desc: "This website contains material and information directed exclusively to persons over 18 years of age (or the legal age of majority in your jurisdiction).",
+      modal_btn_yes: "I am over 18, Enter",
+      modal_btn_no: "I am underage, Exit",
+      main_title: "D/s Application",
+      important: "IMPORTANT:",
+      intro_1: "This application is for adults interested in a consensual domination/submission dynamic.",
+      intro_2: "Respect, consent, and boundaries are mandatory.",
+      intro_3: "This form does not imply automatic acceptance.",
+      sec1_title: "1. General Consent",
+      s1_cb1: "I understand this is a consensual dynamic between adults.",
+      s1_cb2: "I participate voluntarily without external pressure.",
+      s1_cb3: "I can withdraw at any time.",
+      sec2_title: "2. General Profile",
+      s2_alias: "Name or Alias",
+      s2_year: "Birth Year",
+      s2_country: "Country",
+      s2_exp: "Previous experience:",
+      exp_1: "None", exp_2: "Basic", exp_3: "Intermediate", exp_4: "Advanced",
+      s2_search: "What are you looking for in this dynamic? (Max 200 chars)",
+      sec3_title: "3. Findom",
+      s3_accept_lbl: "Do you accept a consensual financial domination dynamic?",
+      fd_yes: "Yes", fd_no: "No", fd_dep: "Depends on conditions",
+      s3_budget: "Voluntary monthly budget (€/$)",
+      s3_limit: "Absolute maximum limit (€/$)",
+      s3_consent: "Understanding of financial consent:",
+      s3_cb1: "I understand I will never be forced to pay anything.",
+      s3_cb2: "I understand I can stop at any time.",
+      s3_cb3: "I understand I must not compromise my financial stability.",
+      sec4_title: "4. Contact",
+      s4_method: "Preferred contact method:",
+      s4_mail: "Email",
+      s4_user: "Contact Username / Email",
+      sec5_title: "5. Rules and Final",
+      s5_rules: "Code of conduct:",
+      s5_cb1: "I understand respect is mandatory in both directions.",
+      s5_cb2: "I understand I can be rejected or blocked if I don't fit.",
+      s5_cb3: "I understand this dynamic can end at any time.",
+      s5_confirm: "Final confirmation:",
+      s5_cb4: "I confirm everything above is true.",
+      s5_cb5: "I confirm I participate voluntarily.",
+      s5_cb6: "I confirm I understand the limits and conditions.",
+      btn_submit: "Submit Application",
+      alert_success: "Success! The form has been fully and correctly completed."
+    }
+  };
+
+  let currentLang = 'es';
+
+
+  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA ---
+  function changeLanguage(lang) {
+    currentLang = lang;
+    
+    // Traducir todos los textos
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    // Recargar países en el idioma correcto para que se ordenen y muestren bien
+    loadCountries();
+
+    // Actualizar el texto visible del input Findom si ya había algo seleccionado
+    const fdInput = document.getElementById('findom-accept');
+    const fdDisplay = document.getElementById('findom-accept-display');
+    if (fdInput.value) {
+      const selectedOpt = document.querySelector(`.fd-opt[data-value="${fdInput.value}"]`);
+      if(selectedOpt) fdDisplay.value = selectedOpt.textContent;
+    }
+  }
+
+
+  // --- 2. MODAL DE AVISO +18 ---
   const ageModal = document.getElementById('age-modal');
   const btnAccept = document.getElementById('btn-accept');
   const btnDecline = document.getElementById('btn-decline');
@@ -16,12 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ageModal.classList.add('hidden');
   });
 
-  btnDecline.addEventListener('click', () => {
-    window.location.href = "https://www.google.com";
-  });
+  btnDecline.addEventListener('click', () => window.location.href = "https://www.google.com");
 
 
-  // 2. LÓGICA DEL MODO OSCURO
+  // --- 3. MODO CLARO / OSCURO ---
   const themeToggle = document.getElementById('theme-toggle');
   
   if (localStorage.getItem('theme') === 'dark') {
@@ -41,38 +163,47 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // 3. CARGA DINÁMICA DE PAÍSES DESDE EL JSON
+  // --- 4. CARGA DINÁMICA DE PAÍSES DESDE EL JSON ---
   function loadCountries() {
     const countryOptionsContainer = document.getElementById('country-options');
     if (!countryOptionsContainer) return;
     
+    countryOptionsContainer.innerHTML = ''; // Limpiar opciones anteriores
+    
     fetch('paises.json')
-      .then(response => {
-        if (!response.ok) throw new Error('No se pudo cargar la lista de países');
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
+        // Ordenar alfabéticamente según el idioma actual
+        data.sort((a, b) => a[currentLang].localeCompare(b[currentLang]));
+        
         data.forEach(pais => {
           const optionDiv = document.createElement('div');
           optionDiv.className = 'custom-option';
           optionDiv.setAttribute('data-value', pais.code);
-          optionDiv.textContent = pais.name;
+          optionDiv.textContent = pais[currentLang]; // Lee 'es' o 'en'
           countryOptionsContainer.appendChild(optionDiv);
         });
+
+        // Restaurar el valor visual si el usuario ya había elegido un país
+        const cInput = document.getElementById('country');
+        const cDisplay = document.getElementById('country-display');
+        if (cInput.value) {
+          const selectedCountry = data.find(p => p.code === cInput.value);
+          if(selectedCountry) cDisplay.value = selectedCountry[currentLang];
+        }
       })
       .catch(error => console.error('Error cargando JSON:', error));
   }
   loadCountries();
 
 
-  // 4. GENERACIÓN DINÁMICA DE AÑOS DE NACIMIENTO (Límite +18 automático)
+  // --- 5. GENERACIÓN DINÁMICA DE AÑO (+18) ---
   function populateYears() {
     const yearOptions = document.getElementById('year-options');
     if (!yearOptions) return;
-
-    const currentYear = new Date().getFullYear();
-    const maxAllowedYear = currentYear - 18; // Solo muestra años válidos para mayores de edad
-
+    
+    const maxAllowedYear = new Date().getFullYear() - 18; 
+    
     for(let i = maxAllowedYear; i >= 1926; i--) {
       const optionDiv = document.createElement('div');
       optionDiv.className = 'custom-option';
@@ -84,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
   populateYears();
 
 
-  // 5. LÓGICA DE LOS DESPLEGABLES PERSONALIZADOS (Países y Año)
+  // --- 6. MENÚS DESPLEGABLES PERSONALIZADOS ---
   const customSelects = document.querySelectorAll('.custom-select-wrapper');
 
   customSelects.forEach(wrapper => {
@@ -94,9 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     trigger.addEventListener('click', function(e) {
       e.stopPropagation();
-      customSelects.forEach(otherWrapper => {
-        if (otherWrapper !== wrapper) otherWrapper.classList.remove('open');
-      });
+      customSelects.forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
       wrapper.classList.toggle('open');
     });
 
@@ -109,104 +238,93 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger.classList.remove('error');
       wrapper.classList.remove('open');
       
-      // Lanzamos el cambio para activar la validación en tiempo real
+      // Activar validación
       hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Si el selector que se tocó fue el de idioma, aplicar traducción general
+      if (hiddenInput.id === 'language') {
+        changeLanguage(hiddenInput.value);
+      }
     });
   });
 
   document.addEventListener('click', () => {
-    customSelects.forEach(wrapper => wrapper.classList.remove('open'));
+    customSelects.forEach(w => w.classList.remove('open'));
   });
 
 
-  // 6. LÓGICA DEL CONTADOR DE CARACTERES
+  // --- 7. CONTADOR DE CARACTERES ---
   const textarea = document.getElementById('busqueda');
   const charCount = document.getElementById('char-count');
-
+  
   textarea.addEventListener('input', function() {
-    const currentLength = this.value.length;
-    charCount.textContent = currentLength;
-    if (currentLength >= 200) charCount.style.color = 'var(--error-color)';
+    charCount.textContent = this.value.length;
+    if (this.value.length >= 200) charCount.style.color = 'var(--error-color)';
     else charCount.style.color = 'var(--text-muted)';
   });
 
 
-  // 7. VALIDACIÓN EN CASCADA COMPLETA E INSTANTÁNEA
+  // --- 8. VALIDACIÓN DE FORMULARIO EN CASCADA ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
-
-  // Bloques de secciones (Fieldsets)
+  
   const sec2 = document.getElementById('section-2');
   const sec3 = document.getElementById('section-3');
   const sec4 = document.getElementById('section-4');
   const sec5 = document.getElementById('section-5');
-
-  // Inputs a validar
+  
   const s2Alias = document.getElementById('alias');
   const dobYear = document.getElementById('dob-year');
   const s2Country = document.getElementById('country');
   const s2Busqueda = document.getElementById('busqueda');
-
   const s3Accept = document.getElementById('findom-accept');
   const s3Presupuesto = document.getElementById('presupuesto');
   const s3Limite = document.getElementById('limite-max');
   const s4Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
-    // ---- VALIDAR SECCIÓN 1 ----
+    // SECCIÓN 1 -> Abre SECCIÓN 2
     const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
-    if (s1Valid) sec2.removeAttribute('disabled');
+    if (s1Valid) sec2.removeAttribute('disabled'); 
     else sec2.setAttribute('disabled', 'true');
 
-    // ---- VALIDAR SECCIÓN 2 ----
+    // SECCIÓN 2 -> Abre SECCIÓN 3
     const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
-    const s2Valid = s1Valid && 
-                    s2Alias.value.trim() !== '' && 
-                    dobYear.value !== '' && 
-                    s2Country.value !== '' && 
-                    expChecked && 
-                    s2Busqueda.value.trim() !== '';
-
-    if (s2Valid) sec3.removeAttribute('disabled');
+    const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
+                    s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
+    if (s2Valid) sec3.removeAttribute('disabled'); 
     else sec3.setAttribute('disabled', 'true');
 
-    // ---- VALIDAR SECCIÓN 3 ----
+    // SECCIÓN 3 -> Abre SECCIÓN 4
     const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
-    const s3Valid = s2Valid && 
-                    s3Accept.value !== '' && 
-                    s3Presupuesto.value !== '' && 
-                    s3Limite.value !== '' && 
-                    s3CbsValid;
-
-    if (s3Valid) sec4.removeAttribute('disabled');
+    const s3Valid = s2Valid && s3Accept.value !== '' && s3Presupuesto.value !== '' && 
+                    s3Limite.value !== '' && s3CbsValid;
+    if (s3Valid) sec4.removeAttribute('disabled'); 
     else sec4.setAttribute('disabled', 'true');
 
-    // ---- VALIDAR SECCIÓN 4 ----
+    // SECCIÓN 4 -> Abre SECCIÓN 5
     const contactoChecked = document.querySelector('input[name="contacto"]:checked') !== null;
-    const s4Valid = s3Valid && 
-                    contactoChecked && 
-                    s4Usuario.value.trim() !== '';
-
-    if (s4Valid) sec5.removeAttribute('disabled');
+    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
+    if (s4Valid) sec5.removeAttribute('disabled'); 
     else sec5.setAttribute('disabled', 'true');
 
-    // ---- VALIDAR SECCIÓN 5 Y BOTÓN DE ENVÍO FINAL ----
+    // SECCIÓN 5 -> Desbloquea el BOTÓN
     const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
     const s5Valid = s4Valid && s5CbsValid;
-
-    if (s5Valid) submitBtn.removeAttribute('disabled');
+    if (s5Valid) submitBtn.removeAttribute('disabled'); 
     else submitBtn.setAttribute('disabled', 'true');
   }
 
-  // Monitorizar cambios en tiempo real
+  // Detectar entradas de usuario y validar en vivo
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
 
-
-  // 8. MANEJO DEL ENVÍO
+  
+  // --- 9. MANEJO DEL ENVÍO ---
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
-    alert("¡Perfecto! El formulario ha sido completamente cumplimentado en orden, respetando los datos de privacidad y está listo para ser enviado.");
+    alert(translations[currentLang].alert_success);
+    // Aquí podrías añadir un código para enviar los datos donde necesites (ej. API, Email)
   });
 
 });

@@ -1,7 +1,3 @@
-el id de la template: template_sqp4qrl y el id del servicio: service_pvx93jh
-
-necesito que modifiques este js para que funcion con emailjs con los id que te doy
-
 document.addEventListener("DOMContentLoaded", () => {
   
   // --- 0. DICCIONARIO DE TRADUCCIONES ---

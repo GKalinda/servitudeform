@@ -58,7 +58,12 @@ const translations = {
     btn_submit: "Enviar Solicitud",
     sending: "Enviando...",
     alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente a Goddess Kalinda.",
-    alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
+    alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo.",
+    
+    // TEXTOS NUEVOS DEL MODAL DE FINDOM
+    findom_modal_title: "⚠️ Aviso sobre Findom",
+    findom_modal_desc: "Ten en cuenta que en esta dinámica NO se realiza ningún tipo de Blackmail (chantaje) ni actividades ilegales o no consensuadas.",
+    btn_ok: "Entendido"
   },
   en: {
     modal_title: "⚠️ +18 Content Warning",
@@ -118,7 +123,12 @@ const translations = {
     btn_submit: "Submit Application",
     sending: "Sending...",
     alert_success: "Form submitted successfully! Your data has been successfully sent to Goddess Kalinda.",
-    alert_error: "There was a problem submitting your application. Please try again."
+    alert_error: "There was a problem submitting your application. Please try again.",
+    
+    // TEXTOS NUEVOS DEL MODAL DE FINDOM
+    findom_modal_title: "⚠️ Findom Notice",
+    findom_modal_desc: "Please note that in this dynamic NO Blackmail or illegal/non-consensual activities are performed.",
+    btn_ok: "Understood"
   },
   de: {
     modal_title: "⚠️ +18 Inhaltswarnung",
@@ -178,7 +188,12 @@ const translations = {
     btn_submit: "Bewerbung absenden",
     sending: "Senden...",
     alert_success: "Formular erfolgreich gesendet! Deine Daten wurden erfolgreich an Goddess Kalinda übermittelt.",
-    alert_error: "Es gab ein Problem beim Senden der Bewerbung. Bitte versuche es erneut."
+    alert_error: "Es gab ein Problem beim Senden der Bewerbung. Bitte versuche es erneut.",
+    
+    // TEXTOS NUEVOS DEL MODAL DE FINDOM
+    findom_modal_title: "⚠️ Findom-Hinweis",
+    findom_modal_desc: "Bitte beachte, dass in dieser Dynamik KEIN Blackmail (Erpressung) oder illegale/nicht einvernehmliche Aktivitäten stattfinden.",
+    btn_ok: "Verstanden"
   },
   it: {
     modal_title: "⚠️ Avviso di Contenuto +18",
@@ -238,6 +253,11 @@ const translations = {
     btn_submit: "Invia Candidatura",
     sending: "Invio in corso...",
     alert_success: "Modulo inviato con successo! I tuoi dati sono stati inviati correttamente a Goddess Kalinda.",
-    alert_error: "Si è verificato un problema durante l'invio della candidatura. Per favore riprova."
+    alert_error: "Si è verificato un problema durante l'invio della candidatura. Per favore riprova.",
+    
+    // TEXTOS NUEVOS DEL MODAL DE FINDOM
+    findom_modal_title: "⚠️ Avviso su Findom",
+    findom_modal_desc: "Tieni presente che in questa dinamica NON si esegue alcun tipo di Blackmail (ricatto) né attività illegali o non consensuali.",
+    btn_ok: "Capito"
   }
 };

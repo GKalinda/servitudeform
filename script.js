@@ -308,7 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     s3Limite.value !== '' && s3CbsValid;
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    const contactoChecked = document.querySelector('input[name="contacto"]:checked') !== null;
+    // AQUÍ ESTABA EL ERROR: Cambiado 'contacto' por 'metodo_contacto' para que coincida con el HTML
+    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
+    
     const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
     if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
@@ -325,12 +327,10 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
     
-    // Cambiar estado visual del botón mientras envía
     submitBtn.setAttribute('disabled', 'true');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].sending;
 
-    // Realizar la petición asíncrona a FormSubmit
     fetch("https://formsubmit.co/ajax/goddeskalinda@gmail.com", {
         method: "POST",
         body: new FormData(form)
@@ -338,8 +338,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(response => {
         if (response.ok) {
             alert(translations[currentLang].alert_success);
-            form.reset(); // Vaciar el formulario completo tras el éxito
-            validateForm(); // Reajustar bloqueos en cascada de nuevo
+            form.reset(); 
+            validateForm(); 
         } else {
             throw new Error();
         }
@@ -348,7 +348,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(translations[currentLang].alert_error);
     })
     .finally(() => {
-        // Restaurar botón
         submitBtn.textContent = originalText;
         validateForm();
     });

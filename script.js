@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modal_desc: "This website contains material and information directed exclusively to persons over 18 years of age (or the legal age of majority in your jurisdiction).",
       modal_btn_yes: "I am over 18, Enter",
       modal_btn_no: "I am underage, Exit",
-      main_title: "Easement Application",
+      main_title: "Servitude Form",
       important: "IMPORTANT:",
       intro_1: "This application is for adults interested in a consensual domination/submission dynamic.",
       intro_2: "Respect, consent, and boundaries are mandatory.",

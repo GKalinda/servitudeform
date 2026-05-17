@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "Confirmo que entiendo los límites y condiciones.",
       btn_submit: "Enviar Solicitud",
       sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados a la bandeja de entrada de la Domina.",
+      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente.",
       alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
     },
     en: {
@@ -95,309 +95,128 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "I confirm I understand the limits and conditions.",
       btn_submit: "Submit Application",
       sending: "Sending...",
-      alert_success: "Form submitted successfully! Your data has been securely transferred.",
-      alert_error: "There was a problem submitting your application. Please try again."
+      alert_success: "Form submitted successfully!",
+      alert_error: "There was a problem submitting your application."
     }
   };
 
   let currentLang = 'es';
 
-  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA ---
   function changeLanguage(lang) {
     currentLang = lang;
-    
+
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (translations[lang] && translations[lang][key]) {
+      if (translations[lang][key]) {
         el.textContent = translations[lang][key];
       }
     });
 
     loadCountries();
-
-    const fdInput = document.getElementById('findom-accept');
-    const fdDisplay = document.getElementById('findom-accept-display');
-    if (fdInput.value) {
-      const selectedOpt = document.querySelector(`.fd-opt[data-value="${fdInput.value}"]`);
-      if(selectedOpt) fdDisplay.value = selectedOpt.textContent;
-    }
   }
 
-  // --- 1.5 LÓGICA DEL INTERRUPTOR DE IDIOMA VISUAL ---
-  const langEsBtn = document.getElementById('lang-es');
-  const langEnBtn = document.getElementById('lang-en');
+  // --- idioma ---
+  document.getElementById('lang-es').addEventListener('click', () => changeLanguage('es'));
+  document.getElementById('lang-en').addEventListener('click', () => changeLanguage('en'));
 
-  langEsBtn.addEventListener('click', () => {
-    if (currentLang !== 'es') {
-      langEsBtn.classList.add('active');
-      langEnBtn.classList.remove('active');
-      changeLanguage('es');
-    }
-  });
-
-  langEnBtn.addEventListener('click', () => {
-    if (currentLang !== 'en') {
-      langEnBtn.classList.add('active');
-      langEsBtn.classList.remove('active');
-      changeLanguage('en');
-    }
-  });
-
-
-  // --- 2. MODAL DE AVISO +18 ---
+  // --- 18 modal ---
   const ageModal = document.getElementById('age-modal');
-  const btnAccept = document.getElementById('btn-accept');
-  const btnDecline = document.getElementById('btn-decline');
-
-  if (!sessionStorage.getItem('ageVerified')) {
-    ageModal.classList.remove('hidden');
-  } else {
-    ageModal.classList.add('hidden');
-  }
-
-  btnAccept.addEventListener('click', () => {
+  document.getElementById('btn-accept').onclick = () => {
     sessionStorage.setItem('ageVerified', 'true');
     ageModal.classList.add('hidden');
-  });
+  };
+  document.getElementById('btn-decline').onclick = () => location.href = "https://www.google.com";
 
-  btnDecline.addEventListener('click', () => window.location.href = "https://www.google.com");
+  if (!sessionStorage.getItem('ageVerified')) ageModal.classList.remove('hidden');
 
-
-  // --- 3. MODO CLARO / OSCURO ---
+  // --- theme ---
   const themeToggle = document.getElementById('theme-toggle');
-  
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
     themeToggle.textContent = '☀️';
   }
 
-  themeToggle.addEventListener('click', () => {
+  themeToggle.onclick = () => {
     document.body.classList.toggle('dark-mode');
-    if (document.body.classList.contains('dark-mode')) {
-      themeToggle.textContent = '☀️';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      themeToggle.textContent = '🌙';
-      localStorage.setItem('theme', 'light');
-    }
-  });
+    localStorage.setItem('theme',
+      document.body.classList.contains('dark-mode') ? 'dark' : 'light'
+    );
+  };
 
+  // --- countries ---
+  let countriesRawData = [];
 
-  // --- 4. CARGA DINÁMICA DE PAÍSES ---
-  let countriesRawData = []; 
   function loadCountries() {
-    const countryOptionsContainer = document.getElementById('country-options');
-    if (!countryOptionsContainer) return;
-    
-    countryOptionsContainer.innerHTML = '';
-    
     fetch('paises.json')
-      .then(response => response.json())
+      .then(r => r.json())
       .then(data => {
         countriesRawData = data;
-        data.sort((a, b) => a[currentLang].localeCompare(b[currentLang]));
-        
-        data.forEach(pais => {
-          const optionDiv = document.createElement('div');
-          optionDiv.className = 'custom-option';
-          optionDiv.setAttribute('data-value', pais.code);
-          optionDiv.textContent = pais[currentLang];
-          countryOptionsContainer.appendChild(optionDiv);
-        });
-
-        const cInput = document.getElementById('country');
-        const cDisplay = document.getElementById('country-display');
-        if (cInput.value) {
-          const selectedCountry = data.find(p => p.code === cInput.value);
-          if(selectedCountry) cDisplay.value = selectedCountry[currentLang];
-        }
-      })
-      .catch(error => console.error('Error cargando JSON:', error));
+      });
   }
   loadCountries();
 
-
-  // --- 5. GENERACIÓN DINÁMICA DE AÑO (+18) ---
-  function populateYears() {
-    const yearOptions = document.getElementById('year-options');
-    if (!yearOptions) return;
-    
-    const maxAllowedYear = new Date().getFullYear() - 18; 
-    
-    for(let i = maxAllowedYear; i >= 1926; i--) {
-      const optionDiv = document.createElement('div');
-      optionDiv.className = 'custom-option';
-      optionDiv.setAttribute('data-value', i);
-      optionDiv.textContent = i;
-      yearOptions.appendChild(optionDiv);
-    }
-  }
-  populateYears();
-
-
-  // --- 6. MENÚS DESPLEGABLES PERSONALIZADOS ---
-  const customSelects = document.querySelectorAll('.custom-select-wrapper');
-
-  customSelects.forEach(wrapper => {
-    const trigger = wrapper.querySelector('.custom-select-trigger');
-    const optionsContainer = wrapper.querySelector('.custom-options');
-    const hiddenInput = wrapper.querySelector('input[type="hidden"]');
-
-    trigger.addEventListener('click', function(e) {
-      e.stopPropagation();
-      customSelects.forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
-      wrapper.classList.toggle('open');
-    });
-
-    optionsContainer.addEventListener('click', function(e) {
-      const targetOption = e.target.closest('.custom-option');
-      if (!targetOption) return;
-
-      trigger.value = targetOption.textContent;
-      hiddenInput.value = targetOption.getAttribute('data-value');
-      trigger.classList.remove('error');
-      wrapper.classList.remove('open');
-      
-      hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-  });
-
-  document.addEventListener('click', () => {
-    customSelects.forEach(w => w.classList.remove('open'));
-  });
-
-
-  // --- 7. CONTADOR DE CARACTERES ---
-  const textarea = document.getElementById('busqueda');
-  const charCount = document.getElementById('char-count');
-  
-  textarea.addEventListener('input', function() {
-    charCount.textContent = this.value.length;
-    if (this.value.length >= 200) charCount.style.color = 'var(--error-color)';
-    else charCount.style.color = 'var(--text-muted)';
-  });
-
-
-  // --- 8. VALIDACIÓN EN CASCADA ---
+  // --- validation ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
-  
-  const sec2 = document.getElementById('section-2');
-  const sec3 = document.getElementById('section-3');
-  const sec4 = document.getElementById('section-4');
-  const sec5 = document.getElementById('section-5');
-  
-  const s2Alias = document.getElementById('alias');
-  const dobYear = document.getElementById('dob-year');
-  const s2Country = document.getElementById('country');
-  const s2Busqueda = document.getElementById('busqueda');
-  const s3Accept = document.getElementById('findom-accept');
-  const s3Presupuesto = document.getElementById('presupuesto');
-  const s3Limite = document.getElementById('limite-max');
-  const s4Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
-    // SECCIÓN 1 -> Abre SECCIÓN 2
-    const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
-    if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
-
-    // SECCIÓN 2 -> Abre SECCIÓN 3
-    const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
-    const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
-                    s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
-    if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
-
-    // SECCIÓN 3 -> Abre SECCIÓN 4
-    const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
-    const s3Valid = s2Valid && s3Accept.value !== '' && s3Presupuesto.value !== '' && 
-                    s3Limite.value !== '' && s3CbsValid;
-    if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
-
-    // SECCIÓN 4 -> Abre SECCIÓN 5
-    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
-    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
-    if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
-
-    // SECCIÓN 5 -> Desbloquea el BOTÓN
-    const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
-    const s5Valid = s4Valid && s5CbsValid;
-    if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
+    const valid = true;
+    submitBtn.disabled = !valid;
   }
 
   form.addEventListener('input', validateForm);
-  form.addEventListener('change', validateForm);
 
-  
-  // --- 9. ENVIAR FORMULARIO POR AJAX A TU EMAIL (FORMSUBMIT) ---
+  // --- 9. EMAILJS ---
   form.addEventListener('submit', (e) => {
-    e.preventDefault(); 
-    
-    submitBtn.setAttribute('disabled', 'true');
+    e.preventDefault();
+
+    submitBtn.disabled = true;
     const originalText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].sending;
 
-    // Traducir país seleccionado para el email
-    let paisSeleccionado = s2Country.value;
-    const findPais = countriesRawData.find(p => p.code === s2Country.value);
-    if (findPais) paisSeleccionado = findPais.es;
-
-    // Traducir opciones Findom para el email
-    let findomTexto = s3Accept.value;
-    if(s3Accept.value === "si") findomTexto = "Sí / Yes";
-    if(s3Accept.value === "no") findomTexto = "No";
-    if(s3Accept.value === "depende") findomTexto = "Depende de condiciones / Conditional";
+    const s2Alias = document.getElementById('alias').value;
+    const dobYear = document.getElementById('dob-year').value;
+    const s2Country = document.getElementById('country').value;
+    const s2Busqueda = document.getElementById('busqueda').value;
+    const s3Accept = document.getElementById('findom-accept').value;
+    const s3Presupuesto = document.getElementById('presupuesto').value;
+    const s3Limite = document.getElementById('limite-max').value;
+    const s4Usuario = document.getElementById('usuario-contacto').value;
 
     const expRadio = document.querySelector('input[name="experiencia"]:checked');
     const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
 
-    // CONSTRUIMOS EL OBJETO CON CLAVES HUMANAS Y EN ORDEN
-    const readableData = {
-      "_subject": `Nueva Solicitud Findom: ${s2Alias.value.trim()}`,
-      "1. Consentimiento General": "Aceptado y marcado (3/3 casillas)",
-      "2. Nombre o Alias": s2Alias.value.trim(),
-      "2. Año de Nacimiento": dobYear.value,
-      "2. País de Residencia": paisSeleccionado,
-      "2. Experiencia Previa": expRadio ? expRadio.value : "No especificado",
-      "2. ¿Qué busca en la dinámica?": s2Busqueda.value.trim(),
-      "3. ¿Acepta dinámica Findom?": findomTexto,
-      "3. Presupuesto Mensual Voluntario": `${s3Presupuesto.value} €/$`,
-      "3. Límite Máximo Absoluto": `${s3Limite.value} €/$`,
-      "3. Consentimiento Financiero": "Entendido y aceptado (3/3 casillas)",
-      "4. Método de Contacto Preferido": contactoRadio ? contactoRadio.value : "No especificado",
-      "4. Cuenta / Email de Contacto": s4Usuario.value.trim(),
-      "5. Normas de Conducta": "Leídas y aceptadas (3/3 casillas)",
-      "5. Confirmación Final": "Declarado como verdadero (3/3 casillas)",
-      "Idioma de Relleno": currentLang.toUpperCase()
+    const templateParams = {
+      subject: `Nueva solicitud: ${s2Alias}`,
+      alias: s2Alias,
+      birth_year: dobYear,
+      country: s2Country,
+      experience: expRadio ? expRadio.value : "",
+      search: s2Busqueda,
+      findom_accept: s3Accept,
+      budget: s3Presupuesto,
+      limit: s3Limite,
+      contact_method: contactoRadio ? contactoRadio.value : "",
+      contact_user: s4Usuario,
+      language: currentLang
     };
 
-    fetch("https://formsubmit.co/ajax/goddeskalinda@gmail.com", {
-        method: "POST",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(readableData)
+    emailjs.send(
+      "service_pvx93jh",
+      "template_sqp4qrl",
+      templateParams
+    )
+    .then(() => {
+      alert(translations[currentLang].alert_success);
+      form.reset();
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(translations[currentLang].alert_success);
-            form.reset(); 
-            document.getElementById('year-display').value = '';
-            document.getElementById('country-display').value = '';
-            document.getElementById('findom-accept-display').value = '';
-            validateForm(); 
-        } else {
-            throw new Error(data.message);
-        }
-    })
-    .catch((error) => {
-        console.error("Error FormSubmit:", error);
-        alert(translations[currentLang].alert_error + "\n\n(Recuerda hacer click en el enlace de activación que FormSubmit envía a tu correo la primera vez).");
+    .catch((err) => {
+      console.error(err);
+      alert(translations[currentLang].alert_error);
     })
     .finally(() => {
-        submitBtn.textContent = originalText;
-        validateForm();
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
     });
   });
 

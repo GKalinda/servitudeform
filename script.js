@@ -1,3 +1,7 @@
+el id de la template: template_sqp4qrl y el id del servicio: service_pvx93jh
+
+necesito que modifiques este js para que funcion con emailjs con los id que te doy
+
 document.addEventListener("DOMContentLoaded", () => {
   
   // --- 0. DICCIONARIO DE TRADUCCIONES ---
@@ -47,17 +51,17 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "Confirmo que entiendo los límites y condiciones.",
       btn_submit: "Enviar Solicitud",
       sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito!",
-      alert_error: "Hubo un problema al enviar la solicitud."
+      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados a la bandeja de entrada de la Domina.",
+      alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
     },
     en: {
       modal_title: "⚠️ +18 Content Warning",
-      modal_desc: "This website contains material intended only for adults (18+).",
+      modal_desc: "This website contains material and information directed exclusively to persons over 18 years of age (or the legal age of majority in your jurisdiction).",
       modal_btn_yes: "I am over 18, Enter",
       modal_btn_no: "I am underage, Exit",
       main_title: "D/s Application",
       important: "IMPORTANT:",
-      intro_1: "This application is for adults interested in consensual domination/submission dynamics.",
+      intro_1: "This application is for adults interested in a consensual domination/submission dynamic.",
       intro_2: "Respect, consent, and boundaries are mandatory.",
       intro_3: "This form does not imply automatic acceptance.",
       sec1_title: "1. General Consent",
@@ -65,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s1_cb2: "I participate voluntarily without external pressure.",
       s1_cb3: "I can withdraw at any time.",
       sec2_title: "2. General Profile",
-      s2_alias: "Name or alias",
+      s2_alias: "Name or Alias",
       s2_year: "Birth Year",
       s2_country: "Country",
       s2_exp: "Previous experience:",
@@ -83,49 +87,76 @@ document.addEventListener("DOMContentLoaded", () => {
       sec4_title: "4. Contact",
       s4_method: "Preferred contact method:",
       s4_mail: "Email",
-      s4_user: "Contact username / email",
+      s4_user: "Contact Username / Email",
       sec5_title: "5. Rules and Final",
       s5_rules: "Code of conduct:",
-      s5_cb1: "Respect is mandatory both ways.",
-      s5_cb2: "I may be rejected or blocked if I don't fit.",
-      s5_cb3: "This dynamic can end at any time.",
+      s5_cb1: "I understand respect is mandatory in both directions.",
+      s5_cb2: "I understand I can be rejected or blocked if I don't fit.",
+      s5_cb3: "I understand this dynamic can end at any time.",
       s5_confirm: "Final confirmation:",
-      s5_cb4: "I confirm everything is true.",
-      s5_cb5: "I confirm participation is voluntary.",
-      s5_cb6: "I confirm I understand the limits.",
+      s5_cb4: "I confirm everything above is true.",
+      s5_cb5: "I confirm I participate voluntarily.",
+      s5_cb6: "I confirm I understand the limits and conditions.",
       btn_submit: "Submit Application",
       sending: "Sending...",
-      alert_success: "Form submitted successfully!",
-      alert_error: "There was a problem submitting the form."
+      alert_success: "Form submitted successfully! Your data has been securely transferred.",
+      alert_error: "There was a problem submitting your application. Please try again."
     }
   };
 
   let currentLang = 'es';
 
-  // --- CAMBIO DE IDIOMA ---
+  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA ---
   function changeLanguage(lang) {
     currentLang = lang;
-
+    
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (translations[lang][key]) {
+      if (translations[lang] && translations[lang][key]) {
         el.textContent = translations[lang][key];
       }
     });
 
     loadCountries();
+
+    const fdInput = document.getElementById('findom-accept');
+    const fdDisplay = document.getElementById('findom-accept-display');
+    if (fdInput.value) {
+      const selectedOpt = document.querySelector(`.fd-opt[data-value="${fdInput.value}"]`);
+      if(selectedOpt) fdDisplay.value = selectedOpt.textContent;
+    }
   }
 
-  document.getElementById('lang-es').addEventListener('click', () => changeLanguage('es'));
-  document.getElementById('lang-en').addEventListener('click', () => changeLanguage('en'));
+  // --- 1.5 LÓGICA DEL INTERRUPTOR DE IDIOMA VISUAL ---
+  const langEsBtn = document.getElementById('lang-es');
+  const langEnBtn = document.getElementById('lang-en');
 
-  // --- MODAL +18 ---
+  langEsBtn.addEventListener('click', () => {
+    if (currentLang !== 'es') {
+      langEsBtn.classList.add('active');
+      langEnBtn.classList.remove('active');
+      changeLanguage('es');
+    }
+  });
+
+  langEnBtn.addEventListener('click', () => {
+    if (currentLang !== 'en') {
+      langEnBtn.classList.add('active');
+      langEsBtn.classList.remove('active');
+      changeLanguage('en');
+    }
+  });
+
+
+  // --- 2. MODAL DE AVISO +18 ---
   const ageModal = document.getElementById('age-modal');
   const btnAccept = document.getElementById('btn-accept');
   const btnDecline = document.getElementById('btn-decline');
 
   if (!sessionStorage.getItem('ageVerified')) {
     ageModal.classList.remove('hidden');
+  } else {
+    ageModal.classList.add('hidden');
   }
 
   btnAccept.addEventListener('click', () => {
@@ -133,13 +164,12 @@ document.addEventListener("DOMContentLoaded", () => {
     ageModal.classList.add('hidden');
   });
 
-  btnDecline.addEventListener('click', () => {
-    window.location.href = "https://www.google.com";
-  });
+  btnDecline.addEventListener('click', () => window.location.href = "https://www.google.com");
 
-  // --- THEME ---
+
+  // --- 3. MODO CLARO / OSCURO ---
   const themeToggle = document.getElementById('theme-toggle');
-
+  
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
     themeToggle.textContent = '☀️';
@@ -147,30 +177,120 @@ document.addEventListener("DOMContentLoaded", () => {
 
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
-    localStorage.setItem('theme',
-      document.body.classList.contains('dark-mode') ? 'dark' : 'light'
-    );
+    if (document.body.classList.contains('dark-mode')) {
+      themeToggle.textContent = '☀️';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      themeToggle.textContent = '🌙';
+      localStorage.setItem('theme', 'light');
+    }
   });
 
-  // --- PAÍSES ---
-  let countriesRawData = [];
 
+  // --- 4. CARGA DINÁMICA DE PAÍSES ---
+  let countriesRawData = []; 
   function loadCountries() {
+    const countryOptionsContainer = document.getElementById('country-options');
+    if (!countryOptionsContainer) return;
+    
+    countryOptionsContainer.innerHTML = '';
+    
     fetch('paises.json')
-      .then(r => r.json())
-      .then(data => countriesRawData = data);
+      .then(response => response.json())
+      .then(data => {
+        countriesRawData = data;
+        data.sort((a, b) => a[currentLang].localeCompare(b[currentLang]));
+        
+        data.forEach(pais => {
+          const optionDiv = document.createElement('div');
+          optionDiv.className = 'custom-option';
+          optionDiv.setAttribute('data-value', pais.code);
+          optionDiv.textContent = pais[currentLang];
+          countryOptionsContainer.appendChild(optionDiv);
+        });
+
+        const cInput = document.getElementById('country');
+        const cDisplay = document.getElementById('country-display');
+        if (cInput.value) {
+          const selectedCountry = data.find(p => p.code === cInput.value);
+          if(selectedCountry) cDisplay.value = selectedCountry[currentLang];
+        }
+      })
+      .catch(error => console.error('Error cargando JSON:', error));
   }
   loadCountries();
 
-  // --- FORM ---
+
+  // --- 5. GENERACIÓN DINÁMICA DE AÑO (+18) ---
+  function populateYears() {
+    const yearOptions = document.getElementById('year-options');
+    if (!yearOptions) return;
+    
+    const maxAllowedYear = new Date().getFullYear() - 18; 
+    
+    for(let i = maxAllowedYear; i >= 1926; i--) {
+      const optionDiv = document.createElement('div');
+      optionDiv.className = 'custom-option';
+      optionDiv.setAttribute('data-value', i);
+      optionDiv.textContent = i;
+      yearOptions.appendChild(optionDiv);
+    }
+  }
+  populateYears();
+
+
+  // --- 6. MENÚS DESPLEGABLES PERSONALIZADOS ---
+  const customSelects = document.querySelectorAll('.custom-select-wrapper');
+
+  customSelects.forEach(wrapper => {
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    const optionsContainer = wrapper.querySelector('.custom-options');
+    const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      customSelects.forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
+      wrapper.classList.toggle('open');
+    });
+
+    optionsContainer.addEventListener('click', function(e) {
+      const targetOption = e.target.closest('.custom-option');
+      if (!targetOption) return;
+
+      trigger.value = targetOption.textContent;
+      hiddenInput.value = targetOption.getAttribute('data-value');
+      trigger.classList.remove('error');
+      wrapper.classList.remove('open');
+      
+      hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
+
+  document.addEventListener('click', () => {
+    customSelects.forEach(w => w.classList.remove('open'));
+  });
+
+
+  // --- 7. CONTADOR DE CARACTERES ---
+  const textarea = document.getElementById('busqueda');
+  const charCount = document.getElementById('char-count');
+  
+  textarea.addEventListener('input', function() {
+    charCount.textContent = this.value.length;
+    if (this.value.length >= 200) charCount.style.color = 'var(--error-color)';
+    else charCount.style.color = 'var(--text-muted)';
+  });
+
+
+  // --- 8. VALIDACIÓN EN CASCADA ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
-
+  
   const sec2 = document.getElementById('section-2');
   const sec3 = document.getElementById('section-3');
   const sec4 = document.getElementById('section-4');
   const sec5 = document.getElementById('section-5');
-
+  
   const s2Alias = document.getElementById('alias');
   const dobYear = document.getElementById('dob-year');
   const s2Country = document.getElementById('country');
@@ -180,76 +300,73 @@ document.addEventListener("DOMContentLoaded", () => {
   const s3Limite = document.getElementById('limite-max');
   const s4Usuario = document.getElementById('usuario-contacto');
 
-  // --- VALIDACIÓN (TU ORIGINAL INTACTA) ---
   function validateForm() {
-
+    // SECCIÓN 1 -> Abre SECCIÓN 2
     const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
-    s1Valid ? sec2.removeAttribute('disabled') : sec2.setAttribute('disabled', 'true');
+    if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
-    const expChecked = document.querySelector('input[name="experiencia"]:checked');
+    // SECCIÓN 2 -> Abre SECCIÓN 3
+    const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
+    const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
+                    s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
+    if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
 
-    const s2Valid =
-      s1Valid &&
-      s2Alias.value.trim() &&
-      dobYear.value &&
-      s2Country.value &&
-      expChecked &&
-      s2Busqueda.value.trim();
-
-    s2Valid ? sec3.removeAttribute('disabled') : sec3.setAttribute('disabled', 'true');
-
+    // SECCIÓN 3 -> Abre SECCIÓN 4
     const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
+    const s3Valid = s2Valid && s3Accept.value !== '' && s3Presupuesto.value !== '' && 
+                    s3Limite.value !== '' && s3CbsValid;
+    if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    const s3Valid =
-      s2Valid &&
-      s3Accept.value &&
-      s3Presupuesto.value &&
-      s3Limite.value &&
-      s3CbsValid;
+    // SECCIÓN 4 -> Abre SECCIÓN 5
+    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
+    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
+    if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
-    s3Valid ? sec4.removeAttribute('disabled') : sec4.setAttribute('disabled', 'true');
-
-    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked');
-
-    const s4Valid =
-      s3Valid &&
-      contactoChecked &&
-      s4Usuario.value.trim();
-
-    s4Valid ? sec5.removeAttribute('disabled') : sec5.setAttribute('disabled', 'true');
-
-    const s5Valid = s4Valid && Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
-
-    submitBtn.disabled = !s5Valid;
+    // SECCIÓN 5 -> Desbloquea el BOTÓN
+    const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
+    const s5Valid = s4Valid && s5CbsValid;
+    if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
   }
 
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
 
-  // --- EMAILJS (CORREGIDO) ---
+  
+    // --- 9. ENVIAR FORMULARIO POR EMAILJS ---
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    submitBtn.disabled = true;
+    e.preventDefault(); 
+    
+    submitBtn.setAttribute('disabled', 'true');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].sending;
 
+    // Traducir país seleccionado para el email
+    let paisSeleccionado = s2Country.value;
     const findPais = countriesRawData.find(p => p.code === s2Country.value);
+    if (findPais) paisSeleccionado = findPais.es;
+
+    // Traducir Findom
+    let findomTexto = s3Accept.value;
+    if(s3Accept.value === "si") findomTexto = "Sí / Yes";
+    if(s3Accept.value === "no") findomTexto = "No";
+    if(s3Accept.value === "depende") findomTexto = "Depende de condiciones / Conditional";
+
     const expRadio = document.querySelector('input[name="experiencia"]:checked');
     const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
 
     const templateParams = {
-      subject: `Nueva solicitud Findom: ${s2Alias.value.trim()}`,
+      subject: `Nueva Solicitud Findom: ${s2Alias.value.trim()}`,
+      "1_consentimiento": "Aceptado",
       alias: s2Alias.value.trim(),
       birth_year: dobYear.value,
-      country: findPais ? findPais.es : s2Country.value,
+      country: paisSeleccionado,
       experience: expRadio ? expRadio.value : "",
-      search: s2Busqueda.value,
-      findom_accept: s3Accept.value,
+      search: s2Busqueda.value.trim(),
+      findom_accept: findomTexto,
       budget: s3Presupuesto.value,
       limit: s3Limite.value,
       contact_method: contactoRadio ? contactoRadio.value : "",
-      contact_user: s4Usuario.value,
+      contact_user: s4Usuario.value.trim(),
       language: currentLang.toUpperCase()
     };
 
@@ -259,20 +376,21 @@ document.addEventListener("DOMContentLoaded", () => {
       templateParams
     )
     .then(() => {
-      alert(translations[currentLang].alert_success);
-      form.reset();
+        alert(translations[currentLang].alert_success);
+        form.reset();
 
-      form.dispatchEvent(new Event('input', { bubbles: true }));
-      form.dispatchEvent(new Event('change', { bubbles: true }));
+        // 🔥 IMPORTANTE: reactivar validación SIN romper selects
+        setTimeout(() => {
+          form.dispatchEvent(new Event('input', { bubbles: true }));
+          form.dispatchEvent(new Event('change', { bubbles: true }));
+        }, 50);
     })
-    .catch((err) => {
-      console.error(err);
-      alert(translations[currentLang].alert_error);
+    .catch((error) => {
+        console.error("EmailJS error:", error);
+        alert(translations[currentLang].alert_error);
     })
     .finally(() => {
-      submitBtn.textContent = originalText;
-      validateForm();
+        submitBtn.textContent = originalText;
+        validateForm();
     });
   });
-
-});

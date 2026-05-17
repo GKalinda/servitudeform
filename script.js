@@ -63,6 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
   btnDecline.addEventListener('click', () => window.location.href = "https://www.google.com");
 
 
+  // --- LÓGICA DEL MODAL DE FINDOM ---
+  const findomModal = document.getElementById('findom-modal');
+  const btnFindomOk = document.getElementById('btn-findom-ok');
+
+  if (btnFindomOk && findomModal) {
+    btnFindomOk.addEventListener('click', (e) => {
+      e.preventDefault();
+      findomModal.classList.add('hidden');
+    });
+  }
+
+
   // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 
   function loadCountries() {
@@ -151,16 +163,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const label = document.createElement('label');
       label.className = 'checkbox-container';
 
-      // Añadir Tooltip si el fetiche es Findom
-      if (fetish.value === "Findom") {
-        label.classList.add('has-tooltip');
-        label.setAttribute('data-tooltip', '⚠️ No blackmail / Sin chantaje');
-      }
-
       const input = document.createElement('input');
       input.type = 'checkbox';
       input.name = 'fetiches';
       input.value = fetish.value;
+
+      // Añadir Tooltip y Evento de Clic en cascada si el fetiche es Findom
+      if (fetish.value === "Findom") {
+        label.classList.add('has-tooltip');
+        label.setAttribute('data-tooltip', '⚠️ No blackmail / Sin chantaje');
+        
+        input.addEventListener('change', function() {
+          if (this.checked && findomModal) {
+            findomModal.classList.remove('hidden');
+          }
+        });
+      }
 
       const spanText = document.createElement('span');
       spanText.setAttribute('data-i18n', fetish.key);

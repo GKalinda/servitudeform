@@ -6,7 +6,7 @@
   <title>Formulario de Servidumbre | Goddess Kalinda</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-mode">
 
   <div id="age-modal" class="modal-overlay">
     <div class="modal-content">
@@ -22,20 +22,28 @@
   <div class="container">
     
     <div class="top-controls">
-      <div class="lang-toggle">
-        <span id="lang-es" class="active">ES</span>
-        <span class="separator">|</span>
-        <span id="lang-en">EN</span>
+      <div class="lang-dropdown-wrapper" id="lang-dropdown">
+        <div class="lang-dropdown-trigger">
+          <span id="current-lang">EN</span>
+          <span class="lang-arrow"></span>
+        </div>
+        <div class="lang-dropdown-options">
+          <span data-lang="en">EN</span>
+          <span data-lang="es">ES</span>
+          <span data-lang="de">DE</span>
+          <span data-lang="it">IT</span>
+        </div>
       </div>
-      <button id="theme-toggle" type="button" aria-label="Cambiar tema">🌙</button>
     </div>
 
-    </br>
+    <p class="goddess-quote" data-i18n="goddess_quote">"Bienvenido a mi mundo, estar a mis pies es un privilegio y mi tiempo un lujo que se concede a pocos."</p>
 
-    <h1 data-i18n="main_title">Solicitud Servidumbre</h1>
+    <h1 data-i18n="main_title">Solicitud de Servidumbre</h1>
 
-    </br>
-    
+    <div class="master-statement" data-i18n="form_intro">
+      Si estás interesado en llenar esta encuesta es porque estás a un paso más de convertirte en mi esclavo y ser de mi propiedad.
+    </div>
+
     <div class="intro-warning">
       <p><strong data-i18n="important">IMPORTANTE:</strong> <span data-i18n="intro_1">Este formulario es para adultos interesados en una dinámica consensuada de dominación/sumisión.</span></p>
       <p data-i18n="intro_2">El respeto, el consentimiento y los límites son obligatorios.</p>
@@ -49,16 +57,22 @@
 
       <fieldset id="section-1" class="form-section">
         <legend data-i18n="sec1_title">1. Consentimiento general</legend>
+        
         <label class="checkbox-container">
-          <input type="checkbox" name="consentimiento_adultos" class="consent-cb" required> <span data-i18n="s1_cb1">Entiendo que esta es una dinámica consensuada entre adultos.</span>
+          <input type="checkbox" name="consentimiento_adultos" class="consent-cb" required> 
+          <span data-i18n="s1_cb1">Entiendo que esta es una dinámica consensuada entre adultos.</span>
           <span class="checkmark"></span>
         </label>
+        
         <label class="checkbox-container">
-          <input type="checkbox" name="consentimiento_voluntario" class="consent-cb" required> <span data-i18n="s1_cb2">Participo voluntariamente sin presión externa.</span>
+          <input type="checkbox" name="consentimiento_voluntario" class="consent-cb" required> 
+          <span data-i18n="s1_cb2">Participo voluntariamente sin presión externa.</span>
           <span class="checkmark"></span>
         </label>
+        
         <label class="checkbox-container">
-          <input type="checkbox" name="consentimiento_retirada" class="consent-cb" required> <span data-i18n="s1_cb3">Puedo retirarme en cualquier momento.</span>
+          <input type="checkbox" name="consentimiento_retirada" class="consent-cb" required> 
+          <span data-i18n="s1_cb3">Puedo retirarme en cualquier momento.</span>
           <span class="checkmark"></span>
         </label>
       </fieldset>
@@ -89,15 +103,25 @@
           <div id="country-options" class="custom-options"></div>
         </div>
 
-        </br>
-
         <div class="form-group-spaced">
           <p class="group-label" data-i18n="s2_exp">Experiencia previa:</p>
           <div class="radio-group">
-            <label class="radio-container"><input type="radio" name="experiencia" value="Ninguna/None" required><span class="radiomark"></span> <span data-i18n="exp_1">Ninguna</span></label>
-            <label class="radio-container"><input type="radio" name="experiencia" value="Basica/Basic"><span class="radiomark"></span> <span data-i18n="exp_2">Básica</span></label>
-            <label class="radio-container"><input type="radio" name="experiencia" value="Intermedia/Intermediate"><span class="radiomark"></span> <span data-i18n="exp_3">Intermedia</span></label>
-            <label class="radio-container"><input type="radio" name="experiencia" value="Avanzada/Advanced"><span class="radiomark"></span> <span data-i18n="exp_4">Avanzada</span></label>
+            <label class="radio-container">
+              <input type="radio" name="experiencia" value="Ninguna/None" required>
+              <span class="radiomark"></span> <span data-i18n="exp_1">Ninguna</span>
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="experiencia" value="Basica/Basic">
+              <span class="radiomark"></span> <span data-i18n="exp_2">Básica</span>
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="experiencia" value="Intermedia/Intermediate">
+              <span class="radiomark"></span> <span data-i18n="exp_3">Intermedia</span>
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="experiencia" value="Avanzada/Advanced">
+              <span class="radiomark"></span> <span data-i18n="exp_4">Avanzada</span>
+            </label>
           </div>
         </div>
 
@@ -109,53 +133,89 @@
       </fieldset>
 
       <fieldset id="section-3" class="form-section" disabled>
-        <legend data-i18n="sec3_title">3. Contacto</legend>
+        <legend data-i18n="sec3_title">3. Fetiches</legend>
+        
         <div class="form-group-spaced">
-          <p class="group-label" data-i18n="s3_method">Método de contacto preferido:</p>
-          <div class="radio-group">
-            <label class="radio-container"><input type="radio" name="metodo_contacto" value="Telegram" required><span class="radiomark"></span> Telegram</label>
-            <label class="radio-container"><input type="radio" name="metodo_contacto" value="Twitter/X"><span class="radiomark"></span> Twitter / X</label>
-            <label class="radio-container"><input type="radio" name="metodo_contacto" value="Correo/Email"><span class="radiomark"></span> <span data-i18n="s3_mail">Correo</span></label>
-          </div>
+          <p class="group-label" data-i18n="s3_list">Selecciona tus fetiches:</p>
+          <div id="fetishes-container" class="form-row"></div>
         </div>
+        
         <div class="form-group">
-          <input type="text" id="usuario-contacto" name="usuario_contacto" placeholder=" " required>
-          <label for="usuario-contacto" data-i18n="s3_user">Usuario / Email de contacto</label>
+          <textarea id="otros-fetiches" name="otros_fetiches" placeholder=" " maxlength="200"></textarea>
+          <label for="otros-fetiches" data-i18n="s3_other">¿Tienes otros fetiches o comentarios?</label>
         </div>
       </fieldset>
 
       <fieldset id="section-4" class="form-section" disabled>
-        <legend data-i18n="sec4_title">4. Normas y Final</legend>
+        <legend data-i18n="sec4_title">4. Contacto</legend>
+        
         <div class="form-group-spaced">
-          <p class="group-label" data-i18n="s4_rules">Normas de conducta:</p>
+          <p class="group-label" data-i18n="s4_method">Método de contacto preferido:</p>
+          <div class="radio-group">
+            <label class="radio-container">
+              <input type="radio" name="metodo_contacto" value="Telegram" required>
+              <span class="radiomark"></span> Telegram
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="metodo_contacto" value="Twitter/X">
+              <span class="radiomark"></span> Twitter / X
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="metodo_contacto" value="Correo/Email">
+              <span class="radiomark"></span> <span data-i18n="s4_mail">Correo</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input type="text" id="usuario-contacto" name="usuario_contacto" placeholder=" " required>
+          <label for="usuario-contacto" data-i18n="s4_user">Usuario / Email de contacto</label>
+        </div>
+      </fieldset>
+
+      <fieldset id="section-5" class="form-section" disabled>
+        <legend data-i18n="sec5_title">5. Normas y Final</legend>
+        
+        <div class="form-group-spaced">
+          <p class="group-label" data-i18n="s5_rules">Normas de conducta:</p>
+          
           <label class="checkbox-container">
-            <input type="checkbox" name="norma_respeto" class="s4-cb" required> <span data-i18n="s4_cb1">Entiendo que el respeto es obligatorio.</span>
+            <input type="checkbox" name="norma_respeto" class="s5-cb" required> 
+            <span data-i18n="s5_cb1">Entiendo que el respeto es obligatorio.</span>
             <span class="checkmark"></span>
           </label>
+          
           <label class="checkbox-container">
-            <input type="checkbox" name="norma_rechazo" class="s4-cb" required> <span data-i18n="s4_cb2">Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.</span>
+            <input type="checkbox" name="norma_rechazo" class="s5-cb" required> 
+            <span data-i18n="s5_cb2">Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.</span>
             <span class="checkmark"></span>
           </label>
+          
           <label class="checkbox-container">
-            <input type="checkbox" name="norma_terminar" class="s4-cb" required> <span data-i18n="s4_cb3">Entiendo que esta dinámica puede terminar en cualquier momento.</span>
+            <input type="checkbox" name="norma_terminar" class="s5-cb" required> 
+            <span data-i18n="s5_cb3">Entiendo que esta dinámica puede terminar en cualquier momento.</span>
             <span class="checkmark"></span>
           </label>
         </div>
 
-        </br>
-
         <div class="form-group-spaced">
-          <p class="group-label" data-i18n="s4_confirm">Confirmación final:</p>
+          <p class="group-label" data-i18n="s5_confirm">Confirmación final:</p>
+          
           <label class="checkbox-container">
-            <input type="checkbox" name="confirmacion_verdadero" class="s4-cb" required> <span data-i18n="s4_cb4">Confirmo que todo lo anterior es verdadero.</span>
+            <input type="checkbox" name="confirmacion_verdadero" class="s5-cb" required> 
+            <span data-i18n="s5_cb4">Confirmo que todo lo anterior es verdadero.</span>
             <span class="checkmark"></span>
           </label>
+          
           <label class="checkbox-container">
-            <input type="checkbox" name="confirmacion_voluntario" class="s4-cb" required> <span data-i18n="s4_cb5">Confirmo que participo voluntariamente.</span>
+            <input type="checkbox" name="confirmacion_voluntario" class="s5-cb" required> 
+            <span data-i18n="s5_cb5">Confirmo que participo voluntariamente.</span>
             <span class="checkmark"></span>
           </label>
+          
           <label class="checkbox-container">
-            <input type="checkbox" name="confirmacion_limites" class="s4-cb" required> <span data-i18n="s4_cb6">Confirmo que entiendo los límites y condiciones.</span>
+            <input type="checkbox" name="confirmacion_limites" class="s5-cb" required> 
+            <span data-i18n="s5_cb6">Confirmo que entiendo los límites y condiciones.</span>
             <span class="checkmark"></span>
           </label>
         </div>
@@ -165,6 +225,7 @@
     </form>
   </div>
 
+  <script src="translations.js"></script>
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>

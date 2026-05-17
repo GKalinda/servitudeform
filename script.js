@@ -23,31 +23,22 @@ document.addEventListener("DOMContentLoaded", () => {
       s2_exp: "Experiencia previa:",
       exp_1: "Ninguna", exp_2: "Básica", exp_3: "Intermedia", exp_4: "Avanzada",
       s2_search: "¿Qué buscas en esta dinámica?",
-      sec3_title: "3. Findom",
-      s3_accept_lbl: "¿Aceptas dinámica de dominación financiera consensuada?",
-      fd_yes: "Sí", fd_no: "No",
-      s3_budget: "Presupuesto mensual voluntario ($)",
-      s3_limit: "Límite máximo absoluto ($)",
-      s3_consent: "Entendimiento del consentimiento financiero:",
-      s3_cb1: "Entiendo que nunca se me obligará a pagar nada.",
-      s3_cb2: "Entiendo que puedo parar en cualquier momento.",
-      s3_cb3: "Entiendo que no debo comprometer mi estabilidad financiera.",
-      sec4_title: "4. Contacto",
-      s4_method: "Método de contacto preferido:",
-      s4_mail: "Correo",
-      s4_user: "Usuario / Email de contacto",
-      sec5_title: "5. Normas y Final",
-      s5_rules: "Normas de conducta:",
-      s5_cb1: "Entiendo que el respeto es obligatorio.",
-      s5_cb2: "Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.",
-      s5_cb3: "Entiendo que esta dinámica puede terminar en cualquier momento.",
-      s5_confirm: "Confirmación final:",
-      s5_cb4: "Confirmo que todo lo anterior es verdadero.",
-      s5_cb5: "Confirmo que participo voluntariamente.",
-      s5_cb6: "Confirmo que entiendo los límites y condiciones.",
+      sec3_title: "3. Contacto",
+      s3_method: "Método de contacto preferido:",
+      s3_mail: "Correo",
+      s3_user: "Usuario / Email de contacto",
+      sec4_title: "4. Normas y Final",
+      s4_rules: "Normas de conducta:",
+      s4_cb1: "Entiendo que el respeto es obligatorio.",
+      s4_cb2: "Entiendo que puedo ser rechazado/a o bloqueado/a si no encajo.",
+      s4_cb3: "Entiendo que esta dinámica puede terminar en cualquier momento.",
+      s4_confirm: "Confirmación final:",
+      s4_cb4: "Confirmo que todo lo anterior es verdadero.",
+      s4_cb5: "Confirmo que participo voluntariamente.",
+      s4_cb6: "Confirmo que entiendo los límites y condiciones.",
       btn_submit: "Enviar Solicitud",
       sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente Goddess Kalinda.",
+      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente a Goddess Kalinda.",
       alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
     },
     en: {
@@ -71,28 +62,19 @@ document.addEventListener("DOMContentLoaded", () => {
       s2_exp: "Previous experience:",
       exp_1: "None", exp_2: "Basic", exp_3: "Intermediate", exp_4: "Advanced",
       s2_search: "What are you looking for in this dynamic?",
-      sec3_title: "3. Findom",
-      s3_accept_lbl: "Do you accept a consensual financial domination dynamic?",
-      fd_yes: "Yes", fd_no: "No",
-      s3_budget: "Voluntary monthly budget ($)",
-      s3_limit: "Absolute maximum limit ($)",
-      s3_consent: "Understanding of financial consent:",
-      s3_cb1: "I understand I will never be forced to pay anything.",
-      s3_cb2: "I understand I can stop at any time.",
-      s3_cb3: "I understand I must not compromise my financial stability.",
-      sec4_title: "4. Contact",
-      s4_method: "Preferred contact method:",
-      s4_mail: "Email",
-      s4_user: "Contact Username / Email",
-      sec5_title: "5. Rules and Final",
-      s5_rules: "Code of conduct:",
-      s5_cb1: "I understand that respect is mandatory.",
-      s5_cb2: "I understand I can be rejected or blocked if I don't fit.",
-      s5_cb3: "I understand this dynamic can end at any time.",
-      s5_confirm: "Final confirmation:",
-      s5_cb4: "I confirm everything above is true.",
-      s5_cb5: "I confirm I participate voluntarily.",
-      s5_cb6: "I confirm I understand the limits and conditions.",
+      sec3_title: "3. Contact",
+      s3_method: "Preferred contact method:",
+      s3_mail: "Email",
+      s3_user: "Contact Username / Email",
+      sec4_title: "4. Rules and Final",
+      s4_rules: "Code of conduct:",
+      s4_cb1: "I understand that respect is mandatory.",
+      s4_cb2: "I understand I can be rejected or blocked if I don't fit.",
+      s4_cb3: "I understand this dynamic can end at any time.",
+      s4_confirm: "Final confirmation:",
+      s4_cb4: "I confirm everything above is true.",
+      s4_cb5: "I confirm I participate voluntarily.",
+      s4_cb6: "I confirm I understand the limits and conditions.",
       btn_submit: "Submit Application",
       sending: "Sending...",
       alert_success: "Form submitted successfully! Your data has been successfully sent to Goddess Kalinda.",
@@ -114,13 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadCountries();
-
-    const fdInput = document.getElementById('findom-accept');
-    const fdDisplay = document.getElementById('findom-accept-display');
-    if (fdInput.value) {
-      const selectedOpt = document.querySelector(`.fd-opt[data-value="${fdInput.value}"]`);
-      if(selectedOpt) fdDisplay.value = selectedOpt.textContent;
-    }
   }
 
   // --- 1.5 LÓGICA DEL INTERRUPTOR DE IDIOMA VISUAL ---
@@ -285,50 +260,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const sec2 = document.getElementById('section-2');
   const sec3 = document.getElementById('section-3');
   const sec4 = document.getElementById('section-4');
-  const sec5 = document.getElementById('section-5');
   
   const s2Alias = document.getElementById('alias');
   const dobYear = document.getElementById('dob-year');
   const s2Country = document.getElementById('country');
   const s2Busqueda = document.getElementById('busqueda');
-  const s3Accept = document.getElementById('findom-accept');
-  const s3Presupuesto = document.getElementById('presupuesto');
-  const s3Limite = document.getElementById('limite-max');
-  const s4Usuario = document.getElementById('usuario-contacto');
+  const s3Usuario = document.getElementById('usuario-contacto');
 
   function validateForm() {
     // SECCIÓN 1 -> Abre SECCIÓN 2
     const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
     if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
-    // SECCIÓN 2 -> Abre SECCIÓN 3
+    // SECCIÓN 2 -> Abre SECCIÓN 3 (Contacto)
     const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
     const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
                     s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
     if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
 
-    // SECCIÓN 3 -> Abre SECCIÓN 4
-    const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
-    const s3Valid = s2Valid && s3Accept.value !== '' && s3Presupuesto.value !== '' && 
-                    s3Limite.value !== '' && s3CbsValid;
+    // SECCIÓN 3 (Contacto) -> Abre SECCIÓN 4 (Normas)
+    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
+    const s3Valid = s2Valid && contactoChecked && s3Usuario.value.trim() !== '';
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    // SECCIÓN 4 -> Abre SECCIÓN 5
-    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
-    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
-    if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
-
-    // SECCIÓN 5 -> Desbloquea el BOTÓN
-    const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
-    const s5Valid = s4Valid && s5CbsValid;
-    if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
+    // SECCIÓN 4 -> Desbloquea el BOTÓN
+    const s4CbsValid = Array.from(document.querySelectorAll('.s4-cb')).every(cb => cb.checked);
+    const s4Valid = s3Valid && s4CbsValid;
+    if (s4Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
   }
 
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
 
   
-    // --- 9. ENVIAR FORMULARIO POR EMAILJS ---
+  // --- 9. ENVIAR FORMULARIO POR EMAILJS ---
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
     
@@ -341,34 +306,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const findPais = countriesRawData.find(p => p.code === s2Country.value);
     if (findPais) paisSeleccionado = findPais.es;
 
-    // Traducir Findom
-    let findomTexto = s3Accept.value;
-    if(s3Accept.value === "si") findomTexto = "Sí / Yes";
-    if(s3Accept.value === "no") findomTexto = "No";
-    if(s3Accept.value === "depende") findomTexto = "Depende de condiciones / Conditional";
-
     const expRadio = document.querySelector('input[name="experiencia"]:checked');
     const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
 
     const templateParams = {
-      subject: `Nueva Solicitud Findom: ${s2Alias.value.trim()}`,
+      subject: `Nueva Solicitud D/s: ${s2Alias.value.trim()}`,
       "1_consentimiento": "Aceptado",
       alias: s2Alias.value.trim(),
       birth_year: dobYear.value,
       country: paisSeleccionado,
       experience: expRadio ? expRadio.value : "",
       search: s2Busqueda.value.trim(),
-      findom_accept: findomTexto,
-      budget: s3Presupuesto.value,
-      limit: s3Limite.value,
       contact_method: contactoRadio ? contactoRadio.value : "",
-      contact_user: s4Usuario.value.trim(),
+      contact_user: s3Usuario.value.trim(),
       language: currentLang.toUpperCase()
     };
 
     emailjs.send(
       "service_pvx93jh",
-      "template_sqp4qrl",
+      "template_sqp4qrl", // Recuerda verificar que la plantilla en EmailJS ya no dependa de las variables borradas
       templateParams
     )
     .then(() => {

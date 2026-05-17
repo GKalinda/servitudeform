@@ -271,7 +271,7 @@ form {
 .checkbox-container, .radio-container {
   display: block;
   position: relative;
-  padding-left: 27px;
+  padding-left: 30px;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 14px;

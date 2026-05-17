@@ -123,22 +123,22 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = '';
 
     const fetishes = [
-      { value: "Humillacion", key: "fetish_humiliation" },
-      { value: "Findom", key: "fetish_findom" },
       { value: "Adoracion_pies", key: "fetish_foot_worship" },
-      { value: "Pedal Pumping", key: "fetish_pedal_pumping" },
-      { value: "Cuero", key: "fetish_leather" },
-      { value: "Sumision Total", key: "fetish_submission" },
-      { value: "Spanking", key: "fetish_spanking" },
-      { value: "Smoking Fetish", key: "fetish_smoking" },
       { value: "Bondage", key: "fetish_bondage" },
-      { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
       { value: "Caning", key: "fetish_caning" },
-      { value: "Pantyhose Fetish", key: "fetish_food_play" },
       { value: "Castidad", key: "fetish_chastity" },
       { value: "CBT", key: "fetish_cbt" },
+      { value: "Control Respiracion", key: "fetish_breath_control" },
+      { value: "Cuero", key: "fetish_leather" },
       { value: "Degradacion", key: "fetish_degradation" },
-      { value: "Control Respiracion", key: "fetish_breath_control" }
+      { value: "Findom", key: "fetish_findom" },
+      { value: "Humillacion", key: "fetish_humiliation" },
+      { value: "Pantyhose Fetish", key: "fetish_food_play" }, // Nota: Se ordena por su 'value' (P)
+      { value: "Pedal Pumping", key: "fetish_pedal_pumping" },
+      { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
+      { value: "Smoking Fetish", key: "fetish_smoking" },
+      { value: "Spanking", key: "fetish_spanking" },
+      { value: "Sumision Total", key: "fetish_submission" }
     ];
 
     const col1 = document.createElement('div');

@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { value: "Cuero", key: "fetish_leather" },
       { value: "Sumision Total", key: "fetish_submission" },
       { value: "Spanking", key: "fetish_spanking" },
-      { value: "Smoking", key: "fetish_smoking" },
+      { value: "Smoking Fetish", key: "fetish_smoking" },
       { value: "Bondage", key: "fetish_bondage" },
       { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
       { value: "Caning", key: "fetish_caning" },

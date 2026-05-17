@@ -20,20 +20,17 @@
   </div>
 
   <div class="container">
-    <button id="theme-toggle" type="button" aria-label="Cambiar tema">🌙</button>
+    
+    <div class="top-controls">
+      <div class="lang-toggle">
+        <span id="lang-es" class="active">ES</span>
+        <span class="separator">|</span>
+        <span id="lang-en">EN</span>
+      </div>
+      <button id="theme-toggle" type="button" aria-label="Cambiar tema">🌙</button>
+    </div>
 
     <h1 data-i18n="main_title">Aplicación D/s</h1>
-    
-    <div class="form-group custom-select-wrapper" style="margin-bottom: 30px;">
-      <input type="text" id="lang-display" class="custom-select-trigger" readonly placeholder=" " value="Español">
-      <label for="lang-display">Idioma / Language</label>
-      <input type="hidden" id="language" value="es">
-      <span class="custom-arrow"></span>
-      <div class="custom-options">
-        <div class="custom-option" data-value="es">Español</div>
-        <div class="custom-option" data-value="en">English</div>
-      </div>
-    </div>
     
     <div class="intro-warning">
       <p><strong data-i18n="important">IMPORTANTE:</strong> <span data-i18n="intro_1">Esta aplicación es para adultos interesados en una dinámica consensuada de dominación/sumisión.</span></p>
@@ -73,7 +70,8 @@
             <label for="year-display" data-i18n="s2_year">Año de nac.</label>
             <input type="hidden" id="dob-year" required>
             <span class="custom-arrow"></span>
-            <div id="year-options" class="custom-options"></div>
+            <div id="year-options" class="custom-options">
+              </div>
           </div>
         </div>
 
@@ -82,7 +80,8 @@
           <label for="country-display" data-i18n="s2_country">País</label>
           <input type="hidden" id="country" required>
           <span class="custom-arrow"></span>
-          <div id="country-options" class="custom-options"></div>
+          <div id="country-options" class="custom-options">
+            </div>
         </div>
 
         <div class="form-group-spaced">

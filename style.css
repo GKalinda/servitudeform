@@ -538,12 +538,18 @@ button[type="submit"]:disabled {
 
   .container::before {
     height: 400px; 
-    /* Forzamos el tamaño y reajuste exacto de la fotografía antes de fusionarla */
-    background-size: cover;
-    background-position: center 10%; 
-    background-repeat: no-repeat;
-    /* Se aplica el degradado y la ruta de la imagen en un único flujo limpio */
-    background-image: linear-gradient(to bottom, rgba(30,30,30,0) 0%, rgba(30,30,30,0) 45%, rgba(30,30,30,0.9) 80%, var(--container-bg) 100%), url('Images/gk.jpg');
+    /* 1. Declaramos primero las propiedades físicas para obligar al móvil a pintar la foto */
+    background-size: cover !important;
+    background-position: center 12% !important; 
+    background-repeat: no-repeat !important;
+    
+    /* 2. Cambiamos el degradado: el color sólido (#1e1e1e) se sitúa abajo de forma estricta */
+    background-image: linear-gradient(to bottom, 
+      rgba(30, 30, 30, 0) 0%, 
+      rgba(30, 30, 30, 0.2) 40%, 
+      rgba(30, 30, 30, 0.8) 75%, 
+      #1e1e1e 100%
+    ), url('Images/gk.jpg') !important;
   }
 
   .goddess-quote {
@@ -563,9 +569,11 @@ button[type="submit"]:disabled {
     margin-bottom: 30px;
   }
 
+  /* Forzar una sola columna en fetiches y campos para que no se rompa el diseño */
   .form-row { 
-    flex-direction: column; 
-    gap: 15px; 
+    display: flex !important;
+    flex-direction: column !important; 
+    gap: 15px !important; 
   }
   
   .intro-warning {

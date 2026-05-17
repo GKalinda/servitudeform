@@ -168,13 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
       input.name = 'fetiches';
       input.value = fetish.value;
 
-      // Tooltip y Evento para Findom, AHORA LEYENDO EL IDIOMA ACTUAL
+      // Evento para Findom (SOLO AL HACER CLIC)
       if (fetish.value === "Findom") {
-        label.classList.add('has-tooltip');
-        
-        // CORRECCIÓN: Se asigna dinámicamente según el idioma
-        label.setAttribute('data-tooltip', translations[currentLang].findom_tooltip);
-        
         input.addEventListener('change', function() {
           if (this.checked && findomModal) {
             findomModal.classList.remove('hidden');

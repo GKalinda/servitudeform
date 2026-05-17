@@ -94,7 +94,7 @@ body {
 .container::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 100px;
   left: 0;
   right: 0;
   height: 580px;

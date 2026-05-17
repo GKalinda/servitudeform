@@ -47,17 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
       s5_cb6: "Confirmo que entiendo los límites y condiciones.",
       btn_submit: "Enviar Solicitud",
       sending: "Enviando...",
-      alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente.",
-      alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo."
+      alert_success: "¡Formulario enviado con éxito!",
+      alert_error: "Hubo un problema al enviar la solicitud."
     },
     en: {
       modal_title: "⚠️ +18 Content Warning",
-      modal_desc: "This website contains material and information directed exclusively to persons over 18 years of age (or the legal age of majority in your jurisdiction).",
+      modal_desc: "This website contains material intended only for adults (18+).",
       modal_btn_yes: "I am over 18, Enter",
       modal_btn_no: "I am underage, Exit",
       main_title: "D/s Application",
       important: "IMPORTANT:",
-      intro_1: "This application is for adults interested in a consensual domination/submission dynamic.",
+      intro_1: "This application is for adults interested in consensual domination/submission dynamics.",
       intro_2: "Respect, consent, and boundaries are mandatory.",
       intro_3: "This form does not imply automatic acceptance.",
       sec1_title: "1. General Consent",
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s1_cb2: "I participate voluntarily without external pressure.",
       s1_cb3: "I can withdraw at any time.",
       sec2_title: "2. General Profile",
-      s2_alias: "Name or Alias",
+      s2_alias: "Name or alias",
       s2_year: "Birth Year",
       s2_country: "Country",
       s2_exp: "Previous experience:",
@@ -83,25 +83,26 @@ document.addEventListener("DOMContentLoaded", () => {
       sec4_title: "4. Contact",
       s4_method: "Preferred contact method:",
       s4_mail: "Email",
-      s4_user: "Contact Username / Email",
+      s4_user: "Contact username / email",
       sec5_title: "5. Rules and Final",
       s5_rules: "Code of conduct:",
-      s5_cb1: "I understand respect is mandatory in both directions.",
-      s5_cb2: "I understand I can be rejected or blocked if I don't fit.",
-      s5_cb3: "I understand this dynamic can end at any time.",
+      s5_cb1: "Respect is mandatory both ways.",
+      s5_cb2: "I may be rejected or blocked if I don't fit.",
+      s5_cb3: "This dynamic can end at any time.",
       s5_confirm: "Final confirmation:",
-      s5_cb4: "I confirm everything above is true.",
-      s5_cb5: "I confirm I participate voluntarily.",
-      s5_cb6: "I confirm I understand the limits and conditions.",
+      s5_cb4: "I confirm everything is true.",
+      s5_cb5: "I confirm participation is voluntary.",
+      s5_cb6: "I confirm I understand the limits.",
       btn_submit: "Submit Application",
       sending: "Sending...",
       alert_success: "Form submitted successfully!",
-      alert_error: "There was a problem submitting your application."
+      alert_error: "There was a problem submitting the form."
     }
   };
 
   let currentLang = 'es';
 
+  // --- CAMBIO DE IDIOMA ---
   function changeLanguage(lang) {
     currentLang = lang;
 
@@ -115,58 +116,117 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCountries();
   }
 
-  // --- idioma ---
   document.getElementById('lang-es').addEventListener('click', () => changeLanguage('es'));
   document.getElementById('lang-en').addEventListener('click', () => changeLanguage('en'));
 
-  // --- 18 modal ---
+  // --- MODAL +18 ---
   const ageModal = document.getElementById('age-modal');
-  document.getElementById('btn-accept').onclick = () => {
+  const btnAccept = document.getElementById('btn-accept');
+  const btnDecline = document.getElementById('btn-decline');
+
+  if (!sessionStorage.getItem('ageVerified')) {
+    ageModal.classList.remove('hidden');
+  }
+
+  btnAccept.addEventListener('click', () => {
     sessionStorage.setItem('ageVerified', 'true');
     ageModal.classList.add('hidden');
-  };
-  document.getElementById('btn-decline').onclick = () => location.href = "https://www.google.com";
+  });
 
-  if (!sessionStorage.getItem('ageVerified')) ageModal.classList.remove('hidden');
+  btnDecline.addEventListener('click', () => {
+    window.location.href = "https://www.google.com";
+  });
 
-  // --- theme ---
+  // --- THEME ---
   const themeToggle = document.getElementById('theme-toggle');
+
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
     themeToggle.textContent = '☀️';
   }
 
-  themeToggle.onclick = () => {
+  themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('theme',
       document.body.classList.contains('dark-mode') ? 'dark' : 'light'
     );
-  };
+  });
 
-  // --- countries ---
+  // --- PAÍSES ---
   let countriesRawData = [];
 
   function loadCountries() {
     fetch('paises.json')
       .then(r => r.json())
-      .then(data => {
-        countriesRawData = data;
-      });
+      .then(data => countriesRawData = data);
   }
   loadCountries();
 
-  // --- validation ---
+  // --- FORM ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
 
+  const sec2 = document.getElementById('section-2');
+  const sec3 = document.getElementById('section-3');
+  const sec4 = document.getElementById('section-4');
+  const sec5 = document.getElementById('section-5');
+
+  const s2Alias = document.getElementById('alias');
+  const dobYear = document.getElementById('dob-year');
+  const s2Country = document.getElementById('country');
+  const s2Busqueda = document.getElementById('busqueda');
+  const s3Accept = document.getElementById('findom-accept');
+  const s3Presupuesto = document.getElementById('presupuesto');
+  const s3Limite = document.getElementById('limite-max');
+  const s4Usuario = document.getElementById('usuario-contacto');
+
+  // --- VALIDACIÓN (TU ORIGINAL INTACTA) ---
   function validateForm() {
-    const valid = true;
-    submitBtn.disabled = !valid;
+
+    const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
+    s1Valid ? sec2.removeAttribute('disabled') : sec2.setAttribute('disabled', 'true');
+
+    const expChecked = document.querySelector('input[name="experiencia"]:checked');
+
+    const s2Valid =
+      s1Valid &&
+      s2Alias.value.trim() &&
+      dobYear.value &&
+      s2Country.value &&
+      expChecked &&
+      s2Busqueda.value.trim();
+
+    s2Valid ? sec3.removeAttribute('disabled') : sec3.setAttribute('disabled', 'true');
+
+    const s3CbsValid = Array.from(document.querySelectorAll('.s3-cb')).every(cb => cb.checked);
+
+    const s3Valid =
+      s2Valid &&
+      s3Accept.value &&
+      s3Presupuesto.value &&
+      s3Limite.value &&
+      s3CbsValid;
+
+    s3Valid ? sec4.removeAttribute('disabled') : sec4.setAttribute('disabled', 'true');
+
+    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked');
+
+    const s4Valid =
+      s3Valid &&
+      contactoChecked &&
+      s4Usuario.value.trim();
+
+    s4Valid ? sec5.removeAttribute('disabled') : sec5.setAttribute('disabled', 'true');
+
+    const s5Valid = s4Valid && Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
+
+    submitBtn.disabled = !s5Valid;
   }
 
   form.addEventListener('input', validateForm);
+  form.addEventListener('change', validateForm);
 
-  // --- 9. EMAILJS ---
+  // --- EMAILJS (CORREGIDO) ---
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -174,31 +234,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const originalText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].sending;
 
-    const s2Alias = document.getElementById('alias').value;
-    const dobYear = document.getElementById('dob-year').value;
-    const s2Country = document.getElementById('country').value;
-    const s2Busqueda = document.getElementById('busqueda').value;
-    const s3Accept = document.getElementById('findom-accept').value;
-    const s3Presupuesto = document.getElementById('presupuesto').value;
-    const s3Limite = document.getElementById('limite-max').value;
-    const s4Usuario = document.getElementById('usuario-contacto').value;
-
+    const findPais = countriesRawData.find(p => p.code === s2Country.value);
     const expRadio = document.querySelector('input[name="experiencia"]:checked');
     const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
 
     const templateParams = {
-      subject: `Nueva solicitud: ${s2Alias}`,
-      alias: s2Alias,
-      birth_year: dobYear,
-      country: s2Country,
+      subject: `Nueva solicitud Findom: ${s2Alias.value.trim()}`,
+      alias: s2Alias.value.trim(),
+      birth_year: dobYear.value,
+      country: findPais ? findPais.es : s2Country.value,
       experience: expRadio ? expRadio.value : "",
-      search: s2Busqueda,
-      findom_accept: s3Accept,
-      budget: s3Presupuesto,
-      limit: s3Limite,
+      search: s2Busqueda.value,
+      findom_accept: s3Accept.value,
+      budget: s3Presupuesto.value,
+      limit: s3Limite.value,
       contact_method: contactoRadio ? contactoRadio.value : "",
-      contact_user: s4Usuario,
-      language: currentLang
+      contact_user: s4Usuario.value,
+      language: currentLang.toUpperCase()
     };
 
     emailjs.send(
@@ -209,6 +261,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(() => {
       alert(translations[currentLang].alert_success);
       form.reset();
+
+      form.dispatchEvent(new Event('input', { bubbles: true }));
+      form.dispatchEvent(new Event('change', { bubbles: true }));
     })
     .catch((err) => {
       console.error(err);
@@ -216,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .finally(() => {
       submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
+      validateForm();
     });
   });
 

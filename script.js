@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { value: "Degradacion", key: "fetish_degradation" },
       { value: "Findom", key: "fetish_findom" },
       { value: "Humillacion", key: "fetish_humiliation" },
-      { value: "Pantyhose Fetish", key: "fetish_food_play" }, // Nota: Se ordena por su 'value' (P)
+      { value: "Pantyhose Fetish", key: "fetish_food_play" }, 
       { value: "Pedal Pumping", key: "fetish_pedal_pumping" },
       { value: "Sadomasoquismo", key: "fetish_sadomasochism" },
       { value: "Smoking Fetish", key: "fetish_smoking" },
@@ -150,6 +150,12 @@ document.addEventListener("DOMContentLoaded", () => {
     fetishes.forEach((fetish, index) => {
       const label = document.createElement('label');
       label.className = 'checkbox-container';
+
+      // Añadir Tooltip si el fetiche es Findom
+      if (fetish.value === "Findom") {
+        label.classList.add('has-tooltip');
+        label.setAttribute('data-tooltip', '⚠️ No blackmail / Sin chantaje');
+      }
 
       const input = document.createElement('input');
       input.type = 'checkbox';

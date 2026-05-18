@@ -78,8 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
     btnSuccessOk.addEventListener('click', (e) => {
       e.preventDefault();
       successModal.classList.add('hidden');
-      window.scrollTo(0, 0); 
-      window.location.reload(); 
+      // REINICIAR LA PÁGINA AL CERRAR EL MODAL DE ÉXITO
+      window.scrollTo(0, 0); // Sube arriba del todo
+      window.location.reload(); // Recarga la web
     });
   }
 
@@ -91,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       errorModal.classList.add('hidden');
     });
   }
+
 
   // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 

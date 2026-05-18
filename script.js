@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     countryOptionsContainer.innerHTML = '';
     
-    fetch('paises.json')
+    fetch('json/paises.json')
       .then(response => response.json())
       .then(data => {
         countriesRawData = data;

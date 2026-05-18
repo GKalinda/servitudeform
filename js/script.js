@@ -78,9 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
     btnSuccessOk.addEventListener('click', (e) => {
       e.preventDefault();
       successModal.classList.add('hidden');
-      // REINICIAR LA PÁGINA AL CERRAR EL MODAL DE ÉXITO
-      window.scrollTo(0, 0); // Sube arriba del todo
-      window.location.reload(); // Recarga la web
+      window.scrollTo(0, 0); 
+      window.location.reload(); 
     });
   }
 
@@ -266,7 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const consentCbs = Array.from(document.querySelectorAll('.consent-cb'));
   const s5Cbs = Array.from(document.querySelectorAll('.s5-cb'));
 
-  // --- LÓGICA DE AGREGAR '@' AUTOMÁTICAMENTE EN TELEGRAM Y TWITTER ---
   const radioContacto = document.querySelectorAll('input[name="metodo_contacto"]');
   
   radioContacto.forEach(radio => {
@@ -300,7 +298,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const s3Valid = s2Valid; 
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    // Validación estricta del campo de contacto
     const contactoChecked = form.metodo_contacto && form.metodo_contacto.value !== '';
     const metodoSeleccionado = contactoChecked ? form.metodo_contacto.value : "";
     const usuarioValor = s4Usuario.value.trim();
@@ -308,11 +305,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let s4Valid = false;
     if (s3Valid && contactoChecked && usuarioValor !== '') {
       if (metodoSeleccionado === "Correo/Email") {
-        // Expresión regular estándar para validar correos electrónicos
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         s4Valid = emailRegex.test(usuarioValor);
       } else {
-        // Para Telegram y Twitter/X, requiere el '@' y al menos 2 caracteres más (ej: @RR)
         s4Valid = usuarioValor.startsWith('@') && usuarioValor.length > 2;
       }
     }
@@ -326,9 +321,18 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
   
-  // --- 9. ENVIAR FORMULARIO POR EMAILJS ---
+  // --- 9. ENVIAR FORMULARIO POR EMAILJS CON RECAPTCHA ---
   form.addEventListener('submit', (e) => {
     e.preventDefault(); 
+
+    // Obtener la respuesta del reCAPTCHA
+    const recaptchaResponse = grecaptcha.getResponse();
+
+    // Validar si se ha completado el captcha
+    if (recaptchaResponse.length === 0) {
+      alert(translations[currentLang].alert_error || "Por favor, completa la verificación de 'No soy un robot'.");
+      return; 
+    }
     
     submitBtn.setAttribute('disabled', 'true');
     const originalText = submitBtn.textContent;
@@ -354,16 +358,19 @@ document.addEventListener("DOMContentLoaded", () => {
       other_fetishes: otrosFetichesText || "Ninguno especificado",
       contact_method: form.metodo_contacto ? form.metodo_contacto.value : "",
       contact_user: s4Usuario.value.trim(),
-      language: currentLang.toUpperCase()
+      language: currentLang.toUpperCase(),
+      "g-recaptcha-response": recaptchaResponse // Se envía el token de Google a EmailJS
     };
 
     emailjs.send("service_pvx93jh", "template_sqp4qrl", templateParams)
     .then(() => {
         if (successModal) successModal.classList.remove('hidden');
+        grecaptcha.reset(); 
     })
     .catch((error) => {
         console.error("EmailJS error:", error);
         if (errorModal) errorModal.classList.remove('hidden');
+        grecaptcha.reset(); 
     })
     .finally(() => {
         submitBtn.textContent = originalText;

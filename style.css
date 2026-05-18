@@ -609,9 +609,19 @@ button[type="submit"]:disabled {
   text-transform: uppercase;
 }
 
-.copyright-notice span {
+/* Enlaces del copyright estilizados con transiciones suaves */
+.copyright-notice span,
+.copyright-notice a {
   color: var(--accent-color);
   font-weight: bold;
+  text-decoration: none; /* Elimina la línea inferior nativa */
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+/* Cambio sutil al pasar el cursor sobre tu nombre */
+.copyright-notice a:hover {
+  color: #b5925f;
 }
 
 /* =========================================================

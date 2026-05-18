@@ -350,8 +350,14 @@ document.addEventListener("DOMContentLoaded", () => {
         resultModalDesc.textContent = translations[currentLang].alert_success;
         resultModal.classList.remove('hidden');
         
-        // 1. Resetear los valores de los inputs
+        // 1. Resetear los valores de los inputs nativos
         form.reset();
+
+        // Limpiar explícitamente los select personalizados (Visuales y Ocultos)
+        document.getElementById('country-display').value = '';
+        document.getElementById('year-display').value = '';
+        document.getElementById('country').value = '';
+        document.getElementById('dob-year').value = '';
 
         // 2. Reiniciar el contador de caracteres visualmente
         const charCountElement = document.getElementById('char-count');
@@ -366,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
             behavior: 'smooth'
         });
 
-        // 4. Volver a ejecutar la validación para bloquear las secciones
+        // 4. Volver a ejecutar la validación para bloquear las secciones de nuevo
         setTimeout(() => {
           form.dispatchEvent(new Event('input', { bubbles: true }));
           form.dispatchEvent(new Event('change', { bubbles: true }));

@@ -388,4 +388,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // --- 11. COPYRIGHT DINÁMICO ---
+  const currentYearSpan = document.getElementById('current-year');
+  if (currentYearSpan) {
+    currentYearSpan.textContent = new Date().getFullYear();
+  }
+
 });

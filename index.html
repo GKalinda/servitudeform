@@ -32,6 +32,26 @@
     </div>
   </div>
 
+  <div id="success-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h2>💌 Mensaje Entregado</h2>
+      <p data-i18n="alert_success">Tu solicitud ha sido enviada correctamente.</p>
+      <div class="modal-buttons">
+        <button id="btn-success-ok" type="button" class="btn-primary" data-i18n="btn_ok">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="error-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h2 style="color: var(--error-color);">⚠️ Error de conexión</h2>
+      <p data-i18n="alert_error">Hubo un problema al intentar enviar tu solicitud. Por favor, inténtalo de nuevo.</p>
+      <div class="modal-buttons">
+        <button id="btn-error-ok" type="button" class="btn-secondary" data-i18n="btn_ok">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     
     <div class="top-controls">

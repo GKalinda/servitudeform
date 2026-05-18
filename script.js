@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // --- 2. MODALES ---
+  // --- 2. LÓGICA DE MODALES (+18, FINDOM, ÉXITO, ERROR) ---
   const ageModal = document.getElementById('age-modal');
   const btnAccept = document.getElementById('btn-accept');
   const btnDecline = document.getElementById('btn-decline');
@@ -65,13 +65,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const findomModal = document.getElementById('findom-modal');
   const btnFindomOk = document.getElementById('btn-findom-ok');
-
   if (btnFindomOk && findomModal) {
     btnFindomOk.addEventListener('click', (e) => {
       e.preventDefault();
       findomModal.classList.add('hidden');
     });
   }
+
+  const successModal = document.getElementById('success-modal');
+  const btnSuccessOk = document.getElementById('btn-success-ok');
+  if (btnSuccessOk && successModal) {
+    btnSuccessOk.addEventListener('click', (e) => {
+      e.preventDefault();
+      successModal.classList.add('hidden');
+    });
+  }
+
+  const errorModal = document.getElementById('error-modal');
+  const btnErrorOk = document.getElementById('btn-error-ok');
+  if (btnErrorOk && errorModal) {
+    btnErrorOk.addEventListener('click', (e) => {
+      e.preventDefault();
+      errorModal.classList.add('hidden');
+    });
+  }
+
 
   // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 
@@ -228,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else charCount.style.color = 'var(--text-muted)';
   });
 
-  // --- 8. VALIDACIÓN EN CASCADA (OPTIMIZADA PARA RENDIMIENTO) ---
+  // --- 8. VALIDACIÓN EN CASCADA (OPTIMIZADA) ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
   
@@ -243,12 +261,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const s2Busqueda = document.getElementById('busqueda');
   const s4Usuario = document.getElementById('usuario-contacto');
 
-  // Cacheamos los arrays estáticos para que no se busquen en cada pulsación de tecla
   const consentCbs = Array.from(document.querySelectorAll('.consent-cb'));
   const s5Cbs = Array.from(document.querySelectorAll('.s5-cb'));
 
   function validateForm() {
-    // Rendimiento ultra-rápido: comprobamos variables cacheadas y valores nativos del form
     const s1Valid = consentCbs.every(cb => cb.checked);
     if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
@@ -304,7 +320,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     emailjs.send("service_pvx93jh", "template_sqp4qrl", templateParams)
     .then(() => {
-        alert(translations[currentLang].alert_success);
+        // Sustituido el alert() por el modal visual premium
+        if (successModal) successModal.classList.remove('hidden');
+        
         form.reset();
         setTimeout(() => {
           form.dispatchEvent(new Event('input', { bubbles: true }));
@@ -313,7 +331,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => {
         console.error("EmailJS error:", error);
-        alert(translations[currentLang].alert_error);
+        // Sustituido el alert() de error
+        if (errorModal) errorModal.classList.remove('hidden');
     })
     .finally(() => {
         submitBtn.textContent = originalText;

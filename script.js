@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(error => console.error('Error cargando JSON:', error));
   }
+  // Se eliminó la llamada duplicada de aquí para evitar que se repitan los países al cargar.
 
   // --- 4. GENERACIÓN DINÁMICA DE AÑO ---
   function populateYears() {
@@ -266,6 +267,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const consentCbs = Array.from(document.querySelectorAll('.consent-cb'));
   const s5Cbs = Array.from(document.querySelectorAll('.s5-cb'));
 
+  // --- LÓGICA DE AGREGAR '@' AUTOMÁTICAMENTE EN TELEGRAM Y TWITTER ---
+  const radioContacto = document.querySelectorAll('input[name="metodo_contacto"]');
+  
+  radioContacto.forEach(radio => {
+    radio.addEventListener('change', function() {
+      const valor = this.value;
+      if ((valor === "Telegram" || valor === "Twitter/X") && !s4Usuario.value.startsWith('@')) {
+        s4Usuario.value = '@' + s4Usuario.value.trim();
+      } else if (valor === "Correo/Email" && s4Usuario.value.startsWith('@')) {
+        s4Usuario.value = s4Usuario.value.substring(1);
+      }
+      validateForm();
+    });
+  });
+
+  s4Usuario.addEventListener('input', function() {
+    const metodoSeleccionado = form.metodo_contacto ? form.metodo_contacto.value : "";
+    if ((metodoSeleccionado === "Telegram" || metodoSeleccionado === "Twitter/X") && !this.value.startsWith('@')) {
+      this.value = '@' + this.value;
+    }
+  });
+
   function validateForm() {
     const s1Valid = consentCbs.every(cb => cb.checked);
     if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
@@ -279,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
     const contactoChecked = form.metodo_contacto && form.metodo_contacto.value !== '';
-    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
+    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '' && s4Usuario.value !== '@';
     if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
     const s5Valid = s4Valid && s5Cbs.every(cb => cb.checked);

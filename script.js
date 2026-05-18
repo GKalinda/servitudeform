@@ -1,26 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   
   // --- 1. LÓGICA DEL CAMBIO DE IDIOMA (DETECCIÓN AUTOMÁTICA) ---
-  
-  // Detectar idioma del navegador del usuario
   const userBrowserLang = navigator.language || navigator.userLanguage; 
-  const langCode = userBrowserLang.substring(0, 2).toLowerCase(); // Extrae solo 'es', 'en', 'de', 'it'
-  
+  const langCode = userBrowserLang.substring(0, 2).toLowerCase(); 
   const supportedLangs = ['en', 'es', 'de', 'it'];
-  
-  // Si el idioma del navegador está soportado, lo usamos. Si no, usamos 'en' por defecto.
   let currentLang = supportedLangs.includes(langCode) ? langCode : 'en';
 
   function changeLanguage(lang) {
     currentLang = lang;
     
-    // 1.1 Actualizar el texto visual del menú desplegable superior
     const currentLangSpan = document.getElementById('current-lang');
-    if (currentLangSpan) {
-      currentLangSpan.textContent = lang.toUpperCase();
-    }
+    if (currentLangSpan) currentLangSpan.textContent = lang.toUpperCase();
     
-    // 1.2 Traducir todos los textos con la etiqueta data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (translations[lang] && translations[lang][key]) {
@@ -28,12 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // 1.3 Recargar listas dinámicas para aplicar el nuevo idioma
     loadCountries();
     populateFetishes(); 
   }
 
-  // Ejecuta la traducción inicial basada en el idioma detectado
   changeLanguage(currentLang); 
 
   // --- 1.5 INTERRUPTOR DE IDIOMAS DESPLEGABLE ---
@@ -43,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   langDropdown.querySelector('.lang-dropdown-trigger').addEventListener('click', (e) => {
     e.stopPropagation();
     langDropdown.classList.toggle('open');
-    // Cerrar los otros campos desplegables si se abre el idioma
     document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
   });
 
@@ -57,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // --- 2. MODAL DE AVISO +18 ---
+  // --- 2. MODALES ---
   const ageModal = document.getElementById('age-modal');
   const btnAccept = document.getElementById('btn-accept');
   const btnDecline = document.getElementById('btn-decline');
@@ -75,8 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnDecline.addEventListener('click', () => window.location.href = "https://www.google.com");
 
-
-  // --- LÓGICA DEL MODAL DE FINDOM ---
   const findomModal = document.getElementById('findom-modal');
   const btnFindomOk = document.getElementById('btn-findom-ok');
 
@@ -86,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       findomModal.classList.add('hidden');
     });
   }
-
 
   // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 
@@ -121,14 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   loadCountries();
 
-
-  // --- 4. GENERACIÓN DINÁMICA DE AÑO (+18) ---
+  // --- 4. GENERACIÓN DINÁMICA DE AÑO ---
   function populateYears() {
     const yearOptions = document.getElementById('year-options');
     if (!yearOptions) return;
-    
     const maxAllowedYear = new Date().getFullYear() - 18; 
-    
     for(let i = maxAllowedYear; i >= 1926; i--) {
       const optionDiv = document.createElement('div');
       optionDiv.className = 'custom-option';
@@ -139,12 +121,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   populateYears();
 
-
   // --- 5. GENERACIÓN DINÁMICA DE FETICHES ---
   function populateFetishes() {
     const container = document.getElementById('fetishes-container');
     if (!container) return;
-
     container.innerHTML = '';
 
     const fetishes = [
@@ -168,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const col1 = document.createElement('div');
     col1.className = 'name-group'; 
-    
     const col2 = document.createElement('div');
     col2.className = 'name-group';
 
@@ -181,12 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
       input.name = 'fetiches';
       input.value = fetish.value;
 
-      // Evento para Findom (SOLO AL HACER CLIC)
       if (fetish.value === "Findom") {
         input.addEventListener('change', function() {
-          if (this.checked && findomModal) {
-            findomModal.classList.remove('hidden');
-          }
+          if (this.checked && findomModal) findomModal.classList.remove('hidden');
         });
       }
 
@@ -202,11 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
       label.appendChild(spanText);
       label.appendChild(spanCheck);
 
-      if (index < 8) {
-        col1.appendChild(label);
-      } else {
-        col2.appendChild(label);
-      }
+      if (index < 8) col1.appendChild(label);
+      else col2.appendChild(label);
     });
 
     container.appendChild(col1);
@@ -214,10 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   populateFetishes();
 
-
-  // --- 6. MENÚS DESPLEGABLES PERSONALIZADOS ---
+  // --- 6. MENÚS DESPLEGABLES ---
   const customSelects = document.querySelectorAll('.custom-select-wrapper');
-
   customSelects.forEach(wrapper => {
     const trigger = wrapper.querySelector('.custom-select-trigger');
     const optionsContainer = wrapper.querySelector('.custom-options');
@@ -226,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger.addEventListener('click', function(e) {
       e.stopPropagation();
       customSelects.forEach(w => { if (w !== wrapper) w.classList.remove('open'); });
-      // Cierra también el menú de idiomas
       langDropdown.classList.remove('open');
       wrapper.classList.toggle('open');
     });
@@ -239,17 +209,14 @@ document.addEventListener("DOMContentLoaded", () => {
       hiddenInput.value = targetOption.getAttribute('data-value');
       trigger.classList.remove('error');
       wrapper.classList.remove('open');
-      
       hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
     });
   });
 
-  // Cerrar cualquier menú al hacer clic en otra parte de la pantalla
   document.addEventListener('click', () => {
     customSelects.forEach(w => w.classList.remove('open'));
     langDropdown.classList.remove('open');
   });
-
 
   // --- 7. CONTADOR DE CARACTERES ---
   const textarea = document.getElementById('busqueda');
@@ -261,8 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else charCount.style.color = 'var(--text-muted)';
   });
 
-
-  // --- 8. VALIDACIÓN EN CASCADA ---
+  // --- 8. VALIDACIÓN EN CASCADA (OPTIMIZADA PARA RENDIMIENTO) ---
   const form = document.getElementById('findomForm');
   const submitBtn = document.getElementById('ui-btn-submit');
   
@@ -277,11 +243,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const s2Busqueda = document.getElementById('busqueda');
   const s4Usuario = document.getElementById('usuario-contacto');
 
+  // Cacheamos los arrays estáticos para que no se busquen en cada pulsación de tecla
+  const consentCbs = Array.from(document.querySelectorAll('.consent-cb'));
+  const s5Cbs = Array.from(document.querySelectorAll('.s5-cb'));
+
   function validateForm() {
-    const s1Valid = Array.from(document.querySelectorAll('.consent-cb')).every(cb => cb.checked);
+    // Rendimiento ultra-rápido: comprobamos variables cacheadas y valores nativos del form
+    const s1Valid = consentCbs.every(cb => cb.checked);
     if (s1Valid) sec2.removeAttribute('disabled'); else sec2.setAttribute('disabled', 'true');
 
-    const expChecked = document.querySelector('input[name="experiencia"]:checked') !== null;
+    const expChecked = form.experiencia && form.experiencia.value !== '';
     const s2Valid = s1Valid && s2Alias.value.trim() !== '' && dobYear.value !== '' && 
                     s2Country.value !== '' && expChecked && s2Busqueda.value.trim() !== '';
     if (s2Valid) sec3.removeAttribute('disabled'); else sec3.setAttribute('disabled', 'true');
@@ -289,18 +260,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const s3Valid = s2Valid; 
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
-    const contactoChecked = document.querySelector('input[name="metodo_contacto"]:checked') !== null;
+    const contactoChecked = form.metodo_contacto && form.metodo_contacto.value !== '';
     const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '';
     if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
-    const s5CbsValid = Array.from(document.querySelectorAll('.s5-cb')).every(cb => cb.checked);
-    const s5Valid = s4Valid && s5CbsValid;
+    const s5Valid = s4Valid && s5Cbs.every(cb => cb.checked);
     if (s5Valid) submitBtn.removeAttribute('disabled'); else submitBtn.setAttribute('disabled', 'true');
   }
 
   form.addEventListener('input', validateForm);
   form.addEventListener('change', validateForm);
-
   
   // --- 9. ENVIAR FORMULARIO POR EMAILJS ---
   form.addEventListener('submit', (e) => {
@@ -314,12 +283,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const findPais = countriesRawData.find(p => p.code === s2Country.value);
     if (findPais) paisSeleccionado = findPais.es;
 
-    const expRadio = document.querySelector('input[name="experiencia"]:checked');
-    const contactoRadio = document.querySelector('input[name="metodo_contacto"]:checked');
-
     const fetichesSeleccionados = Array.from(document.querySelectorAll('input[name="fetiches"]:checked'))
-                                       .map(cb => cb.value)
-                                       .join(", ");
+                                       .map(cb => cb.value).join(", ");
     const otrosFetichesText = document.getElementById('otros-fetiches').value.trim();
 
     const templateParams = {
@@ -328,24 +293,19 @@ document.addEventListener("DOMContentLoaded", () => {
       alias: s2Alias.value.trim(),
       birth_year: dobYear.value,
       country: paisSeleccionado,
-      experience: expRadio ? expRadio.value : "",
+      experience: form.experiencia ? form.experiencia.value : "",
       search: s2Busqueda.value.trim(),
       fetishes: fetichesSeleccionados || "Ninguno seleccionado",
       other_fetishes: otrosFetichesText || "Ninguno especificado",
-      contact_method: contactoRadio ? contactoRadio.value : "",
+      contact_method: form.metodo_contacto ? form.metodo_contacto.value : "",
       contact_user: s4Usuario.value.trim(),
       language: currentLang.toUpperCase()
     };
 
-    emailjs.send(
-      "service_pvx93jh",
-      "template_sqp4qrl", 
-      templateParams
-    )
+    emailjs.send("service_pvx93jh", "template_sqp4qrl", templateParams)
     .then(() => {
         alert(translations[currentLang].alert_success);
         form.reset();
-
         setTimeout(() => {
           form.dispatchEvent(new Event('input', { bubbles: true }));
           form.dispatchEvent(new Event('change', { bubbles: true }));
@@ -362,49 +322,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- 10. PROTECCIÓN BÁSICA CONTRA CURIOSOS ---
-  
-  // 1. Bloquear el clic derecho del ratón
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-  });
-
-  // 2. Bloquear atajos de teclado
+  document.addEventListener('contextmenu', e => e.preventDefault());
   document.addEventListener('keydown', function(e) {
-    // Bloquear F12
-    if (e.key === 'F12' || e.keyCode === 123) {
-      e.preventDefault();
-      return false;
-    }
-    
-    // Bloquear Ctrl+Shift+I (Herramientas de desarrollador) / Cmd+Option+I en Mac
-    if ((e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'i')) {
-      e.preventDefault();
-      return false;
-    }
-    
-    // Bloquear Ctrl+Shift+J (Consola) / Cmd+Option+J en Mac
-    if ((e.ctrlKey && e.shiftKey && e.key === 'J') || (e.metaKey && e.altKey && e.key === 'j')) {
-      e.preventDefault();
-      return false;
-    }
-    
-    // Bloquear Ctrl+Shift+C (Inspector de elementos) / Cmd+Option+C en Mac
-    if ((e.ctrlKey && e.shiftKey && e.key === 'C') || (e.metaKey && e.altKey && e.key === 'c')) {
-      e.preventDefault();
-      return false;
-    }
-    
-    // Bloquear Ctrl+U (Ver código fuente) / Cmd+U en Mac
-    if ((e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 'U') || (e.metaKey && e.key === 'u') || (e.metaKey && e.key === 'U')) {
-      e.preventDefault();
-      return false;
-    }
+    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+    if ((e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'i')) { e.preventDefault(); return false; }
+    if ((e.ctrlKey && e.shiftKey && e.key === 'J') || (e.metaKey && e.altKey && e.key === 'j')) { e.preventDefault(); return false; }
+    if ((e.ctrlKey && e.shiftKey && e.key === 'C') || (e.metaKey && e.altKey && e.key === 'c')) { e.preventDefault(); return false; }
+    if ((e.ctrlKey && (e.key === 'u' || e.key === 'U')) || (e.metaKey && (e.key === 'u' || e.key === 'U'))) { e.preventDefault(); return false; }
   });
 
   // --- 11. COPYRIGHT DINÁMICO ---
   const currentYearSpan = document.getElementById('current-year');
-  if (currentYearSpan) {
-    currentYearSpan.textContent = new Date().getFullYear();
-  }
+  if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
 
 });

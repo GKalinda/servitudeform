@@ -350,8 +350,23 @@ document.addEventListener("DOMContentLoaded", () => {
         resultModalDesc.textContent = translations[currentLang].alert_success;
         resultModal.classList.remove('hidden');
         
+        // 1. Resetear los valores de los inputs
         form.reset();
 
+        // 2. Reiniciar el contador de caracteres visualmente
+        const charCountElement = document.getElementById('char-count');
+        if (charCountElement) {
+            charCountElement.textContent = '0';
+            charCountElement.style.color = 'var(--text-muted)';
+        }
+
+        // 3. Hacer scroll suave hacia arriba de la página
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+        // 4. Volver a ejecutar la validación para bloquear las secciones
         setTimeout(() => {
           form.dispatchEvent(new Event('input', { bubbles: true }));
           form.dispatchEvent(new Event('change', { bubbles: true }));

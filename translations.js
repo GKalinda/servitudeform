@@ -65,8 +65,8 @@ const translations = {
     findom_tooltip: "⚠️ Sin chantaje",
     
     // TEXTOS DE MODALES DE ENVÍO
-    success_title: "💌 Mensaje Entregado",
-    alert_success: "¡Formulario enviado con éxito! Los datos han sido enviados correctamente a Goddess Kalinda.",
+    success_title: "✅ ¡Formulario enviado correctamente!",
+    alert_success: "Los datos han sido enviados correctamente a Goddess Kalinda.",
     error_title: "⚠️ Error de conexión",
     alert_error: "Hubo un problema al enviar la solicitud. Por favor, inténtalo de nuevo.",
     btn_close: "Cerrar"
@@ -136,8 +136,8 @@ const translations = {
     findom_tooltip: "⚠️ No blackmail",
     
     // TEXTOS DE MODALES DE ENVÍO
-    success_title: "💌 Message Delivered",
-    alert_success: "Form submitted successfully! Your data has been successfully sent to Goddess Kalinda.",
+    success_title: "✅ Form submitted successfully!",
+    alert_success: "Your data has been successfully sent to Goddess Kalinda.",
     error_title: "⚠️ Connection Error",
     alert_error: "There was a problem submitting your application. Please try again.",
     btn_close: "Close"
@@ -207,8 +207,8 @@ const translations = {
     findom_tooltip: "⚠️ Keine Erpressung",
     
     // TEXTOS DE MODALES DE ENVÍO
-    success_title: "💌 Nachricht zugestellt",
-    alert_success: "Formular erfolgreich gesendet! Deine Daten wurden erfolgreich an Goddess Kalinda übermittelt.",
+    success_title: "✅ Formular erfolgreich gesendet!",
+    alert_success: "Deine Daten wurden erfolgreich an Goddess Kalinda übermittelt.",
     error_title: "⚠️ Verbindungsfehler",
     alert_error: "Es gab ein Problem beim Senden der Bewerbung. Bitte versuche es erneut.",
     btn_close: "Schließen"
@@ -278,8 +278,8 @@ const translations = {
     findom_tooltip: "⚠️ Nessun ricatto",
     
     // TEXTOS DE MODALES DE ENVÍO
-    success_title: "💌 Messaggio Consegnato",
-    alert_success: "Modulo inviato con successo! I tuoi dati sono stati inviati correttamente a Goddess Kalinda.",
+    success_title: "✅ Modulo inviato con successo!",
+    alert_success: "I tuoi dati sono stati inviati correttamente a Goddess Kalinda.",
     error_title: "⚠️ Errore di connessione",
     alert_error: "Si è verificato un problema durante l'invio della candidatura. Per favore riprova.",
     btn_close: "Chiudi"

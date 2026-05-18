@@ -78,6 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
     btnSuccessOk.addEventListener('click', (e) => {
       e.preventDefault();
       successModal.classList.add('hidden');
+      // REINICIAR LA PÁGINA AL CERRAR EL MODAL DE ÉXITO
+      window.scrollTo(0, 0); // Sube arriba del todo
+      window.location.reload(); // Recarga la web
     });
   }
 
@@ -320,18 +323,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     emailjs.send("service_pvx93jh", "template_sqp4qrl", templateParams)
     .then(() => {
-        // Sustituido el alert() por el modal visual premium
         if (successModal) successModal.classList.remove('hidden');
-        
-        form.reset();
-        setTimeout(() => {
-          form.dispatchEvent(new Event('input', { bubbles: true }));
-          form.dispatchEvent(new Event('change', { bubbles: true }));
-        }, 50);
     })
     .catch((error) => {
         console.error("EmailJS error:", error);
-        // Sustituido el alert() de error
         if (errorModal) errorModal.classList.remove('hidden');
     })
     .finally(() => {

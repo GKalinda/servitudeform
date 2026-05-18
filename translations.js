@@ -2,7 +2,7 @@
 const translations = {
   es: {
     modal_title: "⚠️ Aviso de Contenido +18",
-    modal_desc: "Este sitio web contiene material e información dirigida exclusivamente a personas mayores de 18 años (o la mayoría de edad legal en tu jurisdicción).",
+    modal_desc: "Para arrodillarte ante mí y solicitar el privilegio de servirme, debes ser legalmente un adulto (mayor de 18 años). Este espacio es exclusivo para mentes maduras que comprenden la sumisión consensuada. Si no tienes la edad suficiente, sal de mi vista inmediatamente.",
     modal_btn_yes: "Soy mayor de 18 años, Entrar",
     modal_btn_no: "No soy mayor de edad, Salir",
     goddess_quote: "\"Bienvenido a mi mundo, estar a mis pies es un privilegio y mi tiempo un lujo que se concede a pocos.\"",
@@ -68,7 +68,7 @@ const translations = {
   },
   en: {
     modal_title: "⚠️ +18 Content Warning",
-    modal_desc: "This website contains material and information directed exclusively to persons over 18 years of age (or the legal age of majority in your jurisdiction).",
+    modal_desc: "To kneel before me and request the privilege of serving me, you must be legally an adult (over 18 years old). This space is exclusively for mature minds who understand consensual submission. If you are not old enough, leave my sight immediately.",
     modal_btn_yes: "I am over 18, Enter",
     modal_btn_no: "I am underage, Exit",
     goddess_quote: "\"Welcome to my world, being at my feet is a privilege and my time is a luxury granted to few.\"",
@@ -134,7 +134,7 @@ const translations = {
   },
   de: {
     modal_title: "⚠️ +18 Inhaltswarnung",
-    modal_desc: "Diese Website enthält Material und Informationen, die ausschließlich für Personen über 18 Jahre (oder das gesetzliche Volljährigkeitsalter in deiner Gerichtsbarkeit) bestimmt sind.",
+    modal_desc: "Um vor mir niederzuknien und um das Privileg zu bitten, mir zu dienen, müssen Sie volljährig sein (über 18 Jahre). Dieser Raum ist ausschließlich reifen Menschen vorbehalten, die einvernehmliche Unterwerfung verstehen. Sollten Sie noch nicht alt genug sein, verlassen Sie bitte umgehend meinen Blickfeld.",
     modal_btn_yes: "Ich bin über 18, Eintreten",
     modal_btn_no: "Ich bin minderjährig, Verlassen",
     goddess_quote: "\"Willkommen in meiner Welt, zu meinen Füßen zu sein ist ein Privileg und meine Zeit ein Luxus, der nur wenigen gewährt wird.\"",
@@ -200,7 +200,7 @@ const translations = {
   },
   it: {
     modal_title: "⚠️ Avviso di Contenuto +18",
-    modal_desc: "Questo sito web contiene materiale e informazioni dirette esclusivamente a persone di età superiore ai 18 anni (o alla maggiore età legale nella tua giurisdizione).",
+    modal_desc: "Per inginocchiarti davanti a me e chiedere il privilegio di servirmi, devi essere legalmente maggiorenne (avere più di 18 anni). Questo spazio è riservato esclusivamente a menti mature che comprendono la sottomissione consensuale. Se non hai l'età minima richiesta, allontanati immediatamente dalla mia vista.",
     modal_btn_yes: "Ho più di 18 anni, Entra",
     modal_btn_no: "Sono minorenne, Esci",
     goddess_quote: "\"Benvenuto nel mio mondo, stare ai miei piedi è un privilegio e il mio tempo un lusso concesso a pochi.\"",

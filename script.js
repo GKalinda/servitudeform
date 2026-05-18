@@ -125,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(error => console.error('Error cargando JSON:', error));
   }
-  // Se eliminó la llamada duplicada de aquí para evitar que se repitan los países al cargar.
 
   // --- 4. GENERACIÓN DINÁMICA DE AÑO ---
   function populateYears() {
@@ -301,8 +300,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const s3Valid = s2Valid; 
     if (s3Valid) sec4.removeAttribute('disabled'); else sec4.setAttribute('disabled', 'true');
 
+    // Validación estricta del campo de contacto
     const contactoChecked = form.metodo_contacto && form.metodo_contacto.value !== '';
-    const s4Valid = s3Valid && contactoChecked && s4Usuario.value.trim() !== '' && s4Usuario.value !== '@';
+    const metodoSeleccionado = contactoChecked ? form.metodo_contacto.value : "";
+    const usuarioValor = s4Usuario.value.trim();
+    
+    let s4Valid = false;
+    if (s3Valid && contactoChecked && usuarioValor !== '') {
+      if (metodoSeleccionado === "Correo/Email") {
+        // Expresión regular estándar para validar correos electrónicos
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        s4Valid = emailRegex.test(usuarioValor);
+      } else {
+        // Para Telegram y Twitter/X, requiere el '@' y al menos 2 caracteres más (ej: @RR)
+        s4Valid = usuarioValor.startsWith('@') && usuarioValor.length > 2;
+      }
+    }
+
     if (s4Valid) sec5.removeAttribute('disabled'); else sec5.setAttribute('disabled', 'true');
 
     const s5Valid = s4Valid && s5Cbs.every(cb => cb.checked);

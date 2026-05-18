@@ -522,6 +522,18 @@ button[type="submit"]:disabled {
   box-shadow: none;
 }
 
+/* --- COPYRIGHT --- */
+.copyright-notice {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 35px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  font-family: 'Inter', -apple-system, sans-serif;
+  letter-spacing: 0.5px;
+}
+
 /* =========================================================
    DISEÑO RESPONSIVO (ESPECÍFICO PARA MÓVILES Y TABLETS)
    ========================================================= */

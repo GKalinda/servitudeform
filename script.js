@@ -75,6 +75,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  // --- LÓGICA DEL MODAL DE RESULTADO (ÉXITO / ERROR) ---
+  const resultModal = document.getElementById('result-modal');
+  const resultModalTitle = document.getElementById('result-modal-title');
+  const resultModalDesc = document.getElementById('result-modal-desc');
+  const btnResultOk = document.getElementById('btn-result-ok');
+
+  if (btnResultOk && resultModal) {
+    btnResultOk.addEventListener('click', (e) => {
+      e.preventDefault();
+      resultModal.classList.add('hidden');
+    });
+  }
+
+
   // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 
   function loadCountries() {
@@ -330,7 +344,12 @@ document.addEventListener("DOMContentLoaded", () => {
       templateParams
     )
     .then(() => {
-        alert(translations[currentLang].alert_success);
+        // Modal personalizado de Éxito
+        resultModalTitle.innerHTML = "✔️ Solicitud Enviada";
+        resultModalTitle.style.color = "var(--accent-color)";
+        resultModalDesc.textContent = translations[currentLang].alert_success;
+        resultModal.classList.remove('hidden');
+        
         form.reset();
 
         setTimeout(() => {
@@ -340,7 +359,12 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => {
         console.error("EmailJS error:", error);
-        alert(translations[currentLang].alert_error);
+        
+        // Modal personalizado de Error
+        resultModalTitle.innerHTML = "❌ Error en el envío";
+        resultModalTitle.style.color = "var(--error-color)";
+        resultModalDesc.textContent = translations[currentLang].alert_error;
+        resultModal.classList.remove('hidden');
     })
     .finally(() => {
         submitBtn.textContent = originalText;

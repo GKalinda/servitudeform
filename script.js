@@ -125,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(error => console.error('Error cargando JSON:', error));
   }
-  loadCountries();
 
   // --- 4. GENERACIÓN DINÁMICA DE AÑO ---
   function populateYears() {

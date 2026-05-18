@@ -30,12 +30,18 @@ body {
   padding: 50px 10px;
 }
 
-/* --- MODAL +18 --- */
+/* =========================================================
+   --- MODAL ENTRADA +18 PREMIUM (Inmersivo) ---
+   ========================================================= */
+
+/* 1. Fondo inmersivo con desenfoque fuerte y viñeteado */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--modal-overlay);
-  backdrop-filter: blur(5px);
+  /* Fondo casi negro pero con un sutil radial gradient para viñeteado */
+  background: radial-gradient(circle, rgba(0,0,0,0.85) 0%, rgba(0,0,0,1) 100%);
+  /* Aumentamos el blur para aislar el portal */
+  backdrop-filter: blur(12px); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,7 +51,119 @@ body {
 
 .modal-overlay.hidden { display: none; }
 
-.modal-content {
+/* 2. El Portal de Entrada: Caja elegante, estrecha y con marco dorado */
+.modal-content.entry-portal {
+  background: var(--container-bg);
+  padding: 50px 40px; 
+  /* Diseño tipo retrato, más alto y estrecho */
+  max-width: 420px; 
+  width: 100%;
+  text-align: center;
+  /* Sombras muy pesadas para profundidad */
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  /* Marco dorado muy fino */
+  border: 1px solid rgba(212, 175, 127, 0.3);
+  border-radius: 8px; /* Bordes sutiles, no redondos */
+  
+  /* Pequeña animación de entrada suave */
+  animation: portalEntry 0.5s ease-out;
+}
+
+@keyframes portalEntry {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Estilos del Monograma/Logo GK Header */
+.gk-monogram-header {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.monogram-text {
+  font-family: 'Georgia', serif;
+  font-size: 42px;
+  font-weight: bold;
+  color: var(--accent-color);
+  letter-spacing: 5px;
+  /* Efecto de brillo sutil dorado */
+  text-shadow: 0 0 10px rgba(212, 175, 127, 0.5);
+  line-height: 1;
+}
+
+.monogram-underline {
+  height: 2px;
+  width: 60px;
+  background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+  margin-top: 10px;
+}
+
+/* 4. Tipografía personalizada para autoridad */
+.modal-content h2 { 
+  font-family: 'Georgia', serif; /* A juego con tus frases de autoridad */
+  color: var(--text-main); 
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 25px; 
+}
+
+.modal-content p { 
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 40px; 
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* 5. Botones Apilados: Consecuencia Vertical */
+.modal-buttons.vertical-consequence {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Botón Entrar: Sólido Dorado Premium */
+.btn-primary { 
+  background: var(--accent-color); 
+  color: #121212; 
+  border: 1px solid var(--accent-color);
+}
+.btn-primary:hover { 
+  background: #b5925f; 
+  border-color: #b5925f;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 127, 0.3);
+}
+
+/* Botón Salir: sutil, bordeado, "fantasma" */
+.btn-secondary { 
+  background: transparent; 
+  color: rgba(160, 160, 160, 0.6); 
+  border: 1px solid rgba(68, 68, 68, 0.8); 
+}
+.btn-secondary:hover { 
+  background: rgba(68, 68, 68, 0.2); 
+  color: var(--text-main); 
+  border-color: var(--border-color);
+}
+
+/* Estilos de los modales en general para heredar */
+.modal-content:not(.entry-portal) {
   background: var(--container-bg);
   padding: 40px;
   border-radius: 16px;
@@ -53,30 +171,11 @@ body {
   text-align: center;
   box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
-
-.modal-content h2 { color: var(--accent-color); margin-bottom: 20px; }
-.modal-content p { margin-bottom: 30px; line-height: 1.5; }
-
-.modal-buttons {
+.modal-buttons:not(.vertical-consequence) {
   display: flex;
   gap: 15px;
   flex-direction: column;
 }
-
-.btn-primary, .btn-secondary {
-  padding: 14px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary { background: var(--accent-color); color: #fff; }
-.btn-primary:hover { background: #b5925f; }
-.btn-secondary { background: transparent; color: var(--text-muted); border: 2px solid var(--border-color); }
-.btn-secondary:hover { background: var(--border-color); color: var(--text-main); }
 
 /* --- CONTENEDOR PRINCIPAL --- */
 .container {
@@ -525,13 +624,19 @@ button[type="submit"]:disabled {
 /* --- COPYRIGHT --- */
 .copyright-notice {
   text-align: center;
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 35px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
-  font-family: 'Inter', -apple-system, sans-serif;
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  color: rgba(160, 160, 160, 0.5); /* Gris muy translúcido y sutil */
+  margin-top: 40px;
+  padding-bottom: 10px;
+  font-family: 'Georgia', serif; /* A juego con los títulos y frases */
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Hacemos que el año y el nombre resalten sutilmente con el color de la web */
+.copyright-notice span {
+  color: var(--accent-color);
+  font-weight: bold;
 }
 
 /* =========================================================

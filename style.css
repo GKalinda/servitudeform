@@ -74,24 +74,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 3. Estilos de la decoración superior (Monograma/Textos eliminados) */
-.gk-monogram-header {
-  margin-bottom: 25px; /* Ajuste ligero sin texto */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ELIMINADO .monogram-text ya que no hay letras GK */
-
-.monogram-underline {
-  height: 2px;
-  width: 60px;
-  background: linear-gradient(to right, transparent, var(--accent-color), transparent);
-  /* Eliminado el margin-top para que la línea quede pegada arriba */
-}
-
-/* 4. Tipografía personalizada para autoridad */
+/* 3. Tipografía personalizada para autoridad */
 .modal-content h2 { 
   font-family: 'Georgia', serif; /* A juego con tus frases de autoridad */
   color: var(--text-main); 
@@ -108,7 +91,7 @@ body {
   font-weight: 300;
 }
 
-/* 5. Botones Apilados: Consecuencia Vertical */
+/* 4. Botones Apilados: Consecuencia Vertical */
 .modal-buttons.vertical-consequence {
   display: flex;
   flex-direction: column;

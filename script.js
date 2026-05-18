@@ -1,12 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
   
-  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA (INGLÉS POR DEFECTO) ---
-  let currentLang = 'en';
+  // --- 1. LÓGICA DEL CAMBIO DE IDIOMA (DETECCIÓN AUTOMÁTICA) ---
+  
+  // Detectar idioma del navegador del usuario
+  const userBrowserLang = navigator.language || navigator.userLanguage; 
+  const langCode = userBrowserLang.substring(0, 2).toLowerCase(); // Extrae solo 'es', 'en', 'de', 'it'
+  
+  const supportedLangs = ['en', 'es', 'de', 'it'];
+  
+  // Si el idioma del navegador está soportado, lo usamos. Si no, usamos 'en' por defecto.
+  let currentLang = supportedLangs.includes(langCode) ? langCode : 'en';
 
   function changeLanguage(lang) {
     currentLang = lang;
     
-    // Traducir todos los textos con la etiqueta data-i18n
+    // 1.1 Actualizar el texto visual del menú desplegable superior
+    const currentLangSpan = document.getElementById('current-lang');
+    if (currentLangSpan) {
+      currentLangSpan.textContent = lang.toUpperCase();
+    }
+    
+    // 1.2 Traducir todos los textos con la etiqueta data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (translations[lang] && translations[lang][key]) {
@@ -14,16 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // 1.3 Recargar listas dinámicas para aplicar el nuevo idioma
     loadCountries();
     populateFetishes(); 
   }
 
-  // Ejecuta la traducción inicial
-  changeLanguage('en'); 
+  // Ejecuta la traducción inicial basada en el idioma detectado
+  changeLanguage(currentLang); 
 
   // --- 1.5 INTERRUPTOR DE IDIOMAS DESPLEGABLE ---
   const langDropdown = document.getElementById('lang-dropdown');
-  const currentLangSpan = document.getElementById('current-lang');
   const langOptions = langDropdown.querySelectorAll('.lang-dropdown-options span');
 
   langDropdown.querySelector('.lang-dropdown-trigger').addEventListener('click', (e) => {
@@ -37,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     option.addEventListener('click', () => {
       const selectedLang = option.getAttribute('data-lang');
       if (currentLang !== selectedLang) {
-        currentLangSpan.textContent = option.textContent;
         changeLanguage(selectedLang);
       }
       langDropdown.classList.remove('open');

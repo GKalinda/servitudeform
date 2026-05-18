@@ -75,20 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // --- LÓGICA DEL MODAL DE RESULTADO (ÉXITO / ERROR) ---
-  const resultModal = document.getElementById('result-modal');
-  const resultModalTitle = document.getElementById('result-modal-title');
-  const resultModalDesc = document.getElementById('result-modal-desc');
-  const btnResultOk = document.getElementById('btn-result-ok');
-
-  if (btnResultOk && resultModal) {
-    btnResultOk.addEventListener('click', (e) => {
-      e.preventDefault();
-      resultModal.classList.add('hidden');
-    });
-  }
-
-
   // --- 3. CARGA DINÁMICA DE PAÍSES ---
   let countriesRawData = []; 
   function loadCountries() {
@@ -344,35 +330,9 @@ document.addEventListener("DOMContentLoaded", () => {
       templateParams
     )
     .then(() => {
-        // Modal personalizado de Éxito
-        resultModalTitle.innerHTML = "✔️ Solicitud Enviada";
-        resultModalTitle.style.color = "var(--accent-color)";
-        resultModalDesc.textContent = translations[currentLang].alert_success;
-        resultModal.classList.remove('hidden');
-        
-        // 1. Resetear los valores de los inputs nativos
+        alert(translations[currentLang].alert_success);
         form.reset();
 
-        // Limpiar explícitamente los select personalizados (Visuales y Ocultos)
-        document.getElementById('country-display').value = '';
-        document.getElementById('year-display').value = '';
-        document.getElementById('country').value = '';
-        document.getElementById('dob-year').value = '';
-
-        // 2. Reiniciar el contador de caracteres visualmente
-        const charCountElement = document.getElementById('char-count');
-        if (charCountElement) {
-            charCountElement.textContent = '0';
-            charCountElement.style.color = 'var(--text-muted)';
-        }
-
-        // 3. Hacer scroll suave hacia arriba de la página
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-
-        // 4. Volver a ejecutar la validación para bloquear las secciones de nuevo
         setTimeout(() => {
           form.dispatchEvent(new Event('input', { bubbles: true }));
           form.dispatchEvent(new Event('change', { bubbles: true }));
@@ -380,17 +340,52 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => {
         console.error("EmailJS error:", error);
-        
-        // Modal personalizado de Error
-        resultModalTitle.innerHTML = "❌ Error en el envío";
-        resultModalTitle.style.color = "var(--error-color)";
-        resultModalDesc.textContent = translations[currentLang].alert_error;
-        resultModal.classList.remove('hidden');
+        alert(translations[currentLang].alert_error);
     })
     .finally(() => {
         submitBtn.textContent = originalText;
         validateForm();
     });
+  });
+
+  // --- 10. PROTECCIÓN BÁSICA CONTRA CURIOSOS ---
+  
+  // 1. Bloquear el clic derecho del ratón
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  // 2. Bloquear atajos de teclado
+  document.addEventListener('keydown', function(e) {
+    // Bloquear F12
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+      return false;
+    }
+    
+    // Bloquear Ctrl+Shift+I (Herramientas de desarrollador) / Cmd+Option+I en Mac
+    if ((e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'i')) {
+      e.preventDefault();
+      return false;
+    }
+    
+    // Bloquear Ctrl+Shift+J (Consola) / Cmd+Option+J en Mac
+    if ((e.ctrlKey && e.shiftKey && e.key === 'J') || (e.metaKey && e.altKey && e.key === 'j')) {
+      e.preventDefault();
+      return false;
+    }
+    
+    // Bloquear Ctrl+Shift+C (Inspector de elementos) / Cmd+Option+C en Mac
+    if ((e.ctrlKey && e.shiftKey && e.key === 'C') || (e.metaKey && e.altKey && e.key === 'c')) {
+      e.preventDefault();
+      return false;
+    }
+    
+    // Bloquear Ctrl+U (Ver código fuente) / Cmd+U en Mac
+    if ((e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 'U') || (e.metaKey && e.key === 'u') || (e.metaKey && e.key === 'U')) {
+      e.preventDefault();
+      return false;
+    }
   });
 
 });

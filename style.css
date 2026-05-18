@@ -31,17 +31,23 @@ body {
 }
 
 /* =========================================================
-   --- MODAL ENTRADA +18 PREMIUM (Inmersivo) ---
+   --- MODAL ENTRADA +18 PREMIUM (Inmersivo y Optimizado) ---
    ========================================================= */
 
-/* 1. Fondo inmersivo con desenfoque fuerte y viñeteado */
+/* 1. Fondo inmersivo optimizado para rendimiento */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  /* Fondo casi negro pero con un sutil radial gradient para viñeteado */
   background: radial-gradient(circle, rgba(0,0,0,0.85) 0%, rgba(0,0,0,1) 100%);
-  /* Aumentamos el blur para aislar el portal */
-  backdrop-filter: blur(12px); 
+  
+  /* Se reduce el blur para mejorar drásticamente el rendimiento */
+  backdrop-filter: blur(4px); 
+  -webkit-backdrop-filter: blur(4px); /* Soporte Safari */
+  
+  /* Aceleración por hardware para evitar tirones (lag) */
+  will-change: opacity;
+  transform: translateZ(0);
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,17 +61,12 @@ body {
 .modal-content.entry-portal {
   background: var(--container-bg);
   padding: 50px 40px; 
-  /* Diseño tipo retrato, más alto y estrecho */
   max-width: 420px; 
   width: 100%;
   text-align: center;
-  /* Sombras muy pesadas para profundidad */
   box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  /* Marco dorado muy fino */
   border: 1px solid rgba(212, 175, 127, 0.3);
-  border-radius: 8px; /* Bordes sutiles, no redondos */
-  
-  /* Pequeña animación de entrada suave */
+  border-radius: 8px; 
   animation: portalEntry 0.5s ease-out;
 }
 
@@ -75,15 +76,15 @@ body {
 }
 
 /* 3. Tipografía personalizada para autoridad */
-.modal-content h2 { 
-  font-family: 'Georgia', serif; /* A juego con tus frases de autoridad */
+.modal-content.entry-portal h2 { 
+  font-family: 'Georgia', serif; 
   color: var(--text-main); 
   font-size: 24px;
   font-weight: normal;
   margin-bottom: 25px; 
 }
 
-.modal-content p { 
+.modal-content.entry-portal p { 
   font-size: 15px;
   color: var(--text-muted);
   margin-bottom: 40px; 
@@ -111,26 +112,24 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Botón Entrar: Sólido Dorado Premium */
 .btn-primary { 
   background: var(--accent-color); 
   color: #121212; 
   border: 1px solid var(--accent-color);
 }
-.btn-primary:hover { 
+.btn-primary:hover:not(:disabled) { 
   background: #b5925f; 
   border-color: #b5925f;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(212, 175, 127, 0.3);
 }
 
-/* Botón Salir: sutil, bordeado, "fantasma" */
 .btn-secondary { 
   background: transparent; 
   color: rgba(160, 160, 160, 0.6); 
   border: 1px solid rgba(68, 68, 68, 0.8); 
 }
-.btn-secondary:hover { 
+.btn-secondary:hover:not(:disabled) { 
   background: rgba(68, 68, 68, 0.2); 
   color: var(--text-main); 
   border-color: var(--border-color);
@@ -145,6 +144,9 @@ body {
   text-align: center;
   box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
+.modal-content:not(.entry-portal) h2 { color: var(--accent-color); margin-bottom: 20px; }
+.modal-content:not(.entry-portal) p { margin-bottom: 30px; line-height: 1.5; }
+
 .modal-buttons:not(.vertical-consequence) {
   display: flex;
   gap: 15px;
@@ -599,15 +601,14 @@ button[type="submit"]:disabled {
 .copyright-notice {
   text-align: center;
   font-size: 11px;
-  color: rgba(160, 160, 160, 0.5); /* Gris muy translúcido y sutil */
+  color: rgba(160, 160, 160, 0.5); 
   margin-top: 40px;
   padding-bottom: 10px;
-  font-family: 'Georgia', serif; /* A juego con los títulos y frases */
+  font-family: 'Georgia', serif; 
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
 
-/* Hacemos que el año y el nombre resalten sutilmente con el color de la web */
 .copyright-notice span {
   color: var(--accent-color);
   font-weight: bold;

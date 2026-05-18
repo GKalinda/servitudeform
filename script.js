@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = '';
 
     const fetishes = [
-      { value: "Adoracion_pies", key: "fetish_foot_worship" },
+      { value: "Adoracion de Pies", key: "fetish_foot_worship" },
       { value: "Bondage", key: "fetish_bondage" },
       { value: "Caning", key: "fetish_caning" },
       { value: "Castidad", key: "fetish_chastity" },
